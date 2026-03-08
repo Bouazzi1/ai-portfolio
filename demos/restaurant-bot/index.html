@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Maison Dorée — AI-Powered Restaurant</title>
+    <meta name="description" content="Experience our AI-powered concierge chatbot — 24/7 reservations, menu inquiries, and personalized dining recommendations.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-overlay"></div>
+        <nav class="navbar">
+            <div class="logo">
+                <span class="logo-icon">✦</span>
+                <span class="logo-text">La Maison Dorée</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#" class="nav-cta" id="navReserveBtn">Reserve a Table</a></li>
+            </ul>
+        </nav>
+        <div class="hero-content">
+            <p class="hero-tagline">Fine Dining Experience</p>
+            <h1 class="hero-title">Where Every Meal<br>Tells a Story</h1>
+            <p class="hero-subtitle">Experience Michelin-starred cuisine with our AI-powered concierge — available 24/7 for reservations, menu inquiries, and personalized dining recommendations.</p>
+            <div class="hero-actions">
+                <button class="btn btn-primary" id="heroChatBtn">
+                    <span class="btn-icon">💬</span> Chat with AI Concierge
+                </button>
+                <button class="btn btn-secondary" id="heroReserveBtn">
+                    <span class="btn-icon">📅</span> Book a Table
+                </button>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">4.9</span>
+                    <span class="stat-label">★ Google Rating</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">AI Concierge</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number">2★</span>
+                    <span class="stat-label">Michelin Stars</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </header>
+
+    <!-- Menu Section -->
+    <section class="menu-section" id="menu">
+        <div class="container">
+            <p class="section-tag">Our Menu</p>
+            <h2 class="section-title">Curated Excellence</h2>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <div class="menu-card-icon">🥗</div>
+                    <h3>Starters</h3>
+                    <ul class="menu-items">
+                        <li><span>Truffle Burrata</span><span class="price">€24</span></li>
+                        <li><span>Lobster Bisque</span><span class="price">€28</span></li>
+                        <li><span>Foie Gras Terrine</span><span class="price">€32</span></li>
+                        <li><span>Tuna Tartare</span><span class="price">€26</span></li>
+                    </ul>
+                </div>
+                <div class="menu-card featured">
+                    <div class="menu-card-badge">Chef's Selection</div>
+                    <div class="menu-card-icon">🥩</div>
+                    <h3>Main Courses</h3>
+                    <ul class="menu-items">
+                        <li><span>Wagyu Ribeye A5</span><span class="price">€95</span></li>
+                        <li><span>Dover Sole Meunière</span><span class="price">€68</span></li>
+                        <li><span>Rack of Lamb</span><span class="price">€58</span></li>
+                        <li><span>Risotto al Tartufo</span><span class="price">€45</span></li>
+                    </ul>
+                </div>
+                <div class="menu-card">
+                    <div class="menu-card-icon">🍰</div>
+                    <h3>Desserts</h3>
+                    <ul class="menu-items">
+                        <li><span>Soufflé au Chocolat</span><span class="price">€18</span></li>
+                        <li><span>Crème Brûlée</span><span class="price">€16</span></li>
+                        <li><span>Tarte Tatin</span><span class="price">€20</span></li>
+                        <li><span>Cheese Selection</span><span class="price">€22</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-content">
+                    <p class="section-tag">Why AI Concierge?</p>
+                    <h2 class="section-title">Your Personal<br>Dining Assistant</h2>
+                    <p class="about-text">Our AI-powered concierge is available around the clock to assist you with reservations, dietary requirements, wine pairings, and personalized menu recommendations.</p>
+                    <div class="about-features">
+                        <div class="feature">
+                            <div class="feature-icon">⚡</div>
+                            <div>
+                                <h4>Instant Responses</h4>
+                                <p>Get answers in seconds, not minutes</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">🧠</div>
+                            <div>
+                                <h4>Smart Recommendations</h4>
+                                <p>Personalized for your taste & dietary needs</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">📅</div>
+                            <div>
+                                <h4>Easy Reservations</h4>
+                                <p>Book your table without waiting on hold</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">🌍</div>
+                            <div>
+                                <h4>Multilingual</h4>
+                                <p>French, English, Arabic & more</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-visual">
+                    <div class="chat-preview">
+                        <div class="chat-preview-header">
+                            <div class="chat-preview-dot"></div>
+                            <span>AI Concierge — Live Preview</span>
+                        </div>
+                        <div class="chat-preview-messages">
+                            <div class="preview-msg bot">
+                                <span>Welcome to La Maison Dorée! 🌟 How may I assist you today?</span>
+                            </div>
+                            <div class="preview-msg user">
+                                <span>Do you have gluten-free options?</span>
+                            </div>
+                            <div class="preview-msg bot">
+                                <span>Absolutely! Our chef offers several gluten-free dishes including the Tuna Tartare (€26), Risotto al Tartufo (€45), and our signature Crème Brûlée (€16). Shall I help you with a reservation? 😊</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <p class="section-tag">Visit Us</p>
+            <h2 class="section-title">Get in Touch</h2>
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="contact-icon">📍</div>
+                    <h4>Address</h4>
+                    <p>42 Avenue des Champs-Élysées<br>75008 Paris, France</p>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">🕐</div>
+                    <h4>Hours</h4>
+                    <p>Mon–Sat: 12:00 – 23:00<br>Sunday: 12:00 – 22:00</p>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">📞</div>
+                    <h4>Contact</h4>
+                    <p>+33 1 42 68 53 00<br>info@maisondoree.fr</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="logo-icon">✦</span>
+                    <span class="logo-text">La Maison Dorée</span>
+                </div>
+                <p class="footer-note">AI Chatbot Demo — Built by <strong>AI Automation Studio</strong></p>
+                <p class="footer-tech">Powered by GPT-4 · RAG Pipeline · Custom Knowledge Base</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot Widget -->
+    <div class="chatbot-toggle" id="chatbotToggle">
+        <div class="chatbot-toggle-icon">💬</div>
+        <div class="chatbot-toggle-pulse"></div>
+    </div>
+
+    <div class="chatbot-window" id="chatbotWindow">
+        <div class="chatbot-header">
+            <div class="chatbot-header-info">
+                <div class="chatbot-avatar">🤖</div>
+                <div>
+                    <h4>AI Concierge</h4>
+                    <span class="chatbot-status">● Online — Typically replies instantly</span>
+                </div>
+            </div>
+            <button class="chatbot-close" id="chatbotClose">✕</button>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="message bot-message">
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    <p>Bonjour! Welcome to <strong>La Maison Dorée</strong> 🌟</p>
+                    <p>I'm your AI concierge. I can help you with:</p>
+                    <ul>
+                        <li>📋 Menu & dietary information</li>
+                        <li>📅 Table reservations</li>
+                        <li>🍷 Wine pairing suggestions</li>
+                        <li>❓ Any other questions</li>
+                    </ul>
+                    <p>How may I assist you today?</p>
+                </div>
+            </div>
+        </div>
+        <div class="chatbot-suggestions" id="chatbotSuggestions">
+            <button class="suggestion-chip" data-msg="What's on the menu today?">📋 View Menu</button>
+            <button class="suggestion-chip" data-msg="I'd like to make a reservation">📅 Reserve a Table</button>
+            <button class="suggestion-chip" data-msg="Do you have vegetarian or gluten-free options?">🥗 Dietary Options</button>
+            <button class="suggestion-chip" data-msg="What wine would you recommend with steak?">🍷 Wine Pairing</button>
+        </div>
+        <div class="chatbot-input-area">
+            <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Type your message..." autocomplete="off">
+            <button class="chatbot-send" id="chatbotSend">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 2L11 13"></path>
+                    <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script src="chatbot.js"></script>
+</body>
+</html>

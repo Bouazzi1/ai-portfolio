@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaTech — AI Customer Support Demo</title>
+    <meta name="description"
+        content="AI-powered customer support chatbot for e-commerce — handles orders, returns, product questions, and recommendations 24/7.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Hero -->
+    <header class="hero">
+        <nav class="navbar">
+            <div class="logo">
+                <div class="logo-mark">N</div>
+                <span class="logo-text">NovaTech</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#products">Products</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#testimonials">Reviews</a></li>
+                <li><a href="#" class="nav-cta" id="navSupportBtn">💬 Live Support</a></li>
+            </ul>
+        </nav>
+        <div class="hero-content">
+            <div class="hero-badge">🤖 AI-Powered Support</div>
+            <h1>Never Miss a Customer<br>Question Again</h1>
+            <p class="hero-desc">Our AI chatbot handles orders, returns, product questions, and recommendations — 24/7,
+                in any language. See it in action.</p>
+            <div class="hero-actions">
+                <button class="btn btn-primary" id="heroChatBtn">
+                    <span>Try the AI Chatbot</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </button>
+                <button class="btn btn-ghost">Watch Demo</button>
+            </div>
+            <div class="hero-metrics">
+                <div class="metric">
+                    <span class="metric-value">93%</span>
+                    <span class="metric-label">Resolution Rate</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-value">&lt;3s</span>
+                    <span class="metric-label">Avg Response</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-value">24/7</span>
+                    <span class="metric-label">Availability</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-value">15+</span>
+                    <span class="metric-label">Languages</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-glow"></div>
+    </header>
+
+    <!-- Products Section -->
+    <section class="products-section" id="products">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Shop</span>
+                <h2>Trending Products</h2>
+                <p>Our AI bot knows every product detail — try asking about any of them!</p>
+            </div>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-badge">Best Seller</div>
+                    <div class="product-img">🎧</div>
+                    <h3>Nova Pro Headphones</h3>
+                    <p class="product-desc">Wireless ANC headphones, 40h battery</p>
+                    <div class="product-footer">
+                        <span class="product-price">$299</span>
+                        <span class="product-rating">★ 4.8 (2.1k)</span>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-badge new">New</div>
+                    <div class="product-img">⌚</div>
+                    <h3>Nova Watch Ultra</h3>
+                    <p class="product-desc">Smart fitness watch, GPS, health tracking</p>
+                    <div class="product-footer">
+                        <span class="product-price">$449</span>
+                        <span class="product-rating">★ 4.9 (890)</span>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img">📱</div>
+                    <h3>Nova Phone 15</h3>
+                    <p class="product-desc">6.7" OLED, 200MP camera, 5G</p>
+                    <div class="product-footer">
+                        <span class="product-price">$899</span>
+                        <span class="product-rating">★ 4.7 (3.4k)</span>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img">💻</div>
+                    <h3>Nova Laptop Air</h3>
+                    <p class="product-desc">15" Retina, M4 chip, 24h battery</p>
+                    <div class="product-footer">
+                        <span class="product-price">$1,299</span>
+                        <span class="product-rating">★ 4.9 (1.8k)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">AI Capabilities</span>
+                <h2>What Our Bot Can Do</h2>
+                <p>Trained on your entire product catalog, policies, and customer history</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📦</div>
+                    <h3>Order Tracking</h3>
+                    <p>Real-time order status, shipping updates, and delivery estimates</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">↩️</div>
+                    <h3>Returns & Refunds</h3>
+                    <p>Automated return processing with label generation</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Product Search</h3>
+                    <p>Natural language product discovery and comparisons</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3>Recommendations</h3>
+                    <p>AI-powered product suggestions based on preferences</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Multilingual</h3>
+                    <p>Supports 15+ languages automatically detected</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Lead Capture</h3>
+                    <p>Collects emails and preferences for marketing</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Social Proof</span>
+                <h2>What Customers Say</h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p>"The chatbot resolved my return in 30 seconds. I didn't need to wait for a human at all!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SK</div>
+                        <div>
+                            <strong>Sarah K.</strong>
+                            <span>Verified Buyer</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p>"Asked about headphone specs at 2 AM and got a perfect answer instantly. Game changer."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MR</div>
+                        <div>
+                            <strong>Marcus R.</strong>
+                            <span>Repeat Customer</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p>"It recommended the perfect laptop based on my needs. Better than any sales associate!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">AL</div>
+                        <div>
+                            <strong>Amira L.</strong>
+                            <span>Verified Buyer</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo">
+                    <div class="logo-mark">N</div>
+                    <span class="logo-text">NovaTech</span>
+                </div>
+                <p class="footer-note">AI Chatbot Demo — Built by <strong>AI Automation Studio</strong></p>
+                <p class="footer-tech">Powered by GPT-4 · RAG Pipeline · Custom Product Knowledge Base</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot Widget -->
+    <div class="chatbot-toggle" id="chatbotToggle">
+        <div class="chatbot-toggle-icon">💬</div>
+        <div class="chatbot-notification">1</div>
+    </div>
+
+    <div class="chatbot-window" id="chatbotWindow">
+        <div class="chatbot-header">
+            <div class="chatbot-header-info">
+                <div class="chatbot-avatar">🤖</div>
+                <div>
+                    <h4>NovaTech Support</h4>
+                    <span class="chatbot-status">● Online — AI-powered</span>
+                </div>
+            </div>
+            <button class="chatbot-close" id="chatbotClose">✕</button>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="message bot-message">
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    <p>Hey! 👋 Welcome to <strong>NovaTech Support</strong></p>
+                    <p>I'm your AI assistant and I can help with:</p>
+                    <ul>
+                        <li>📦 Order tracking & shipping</li>
+                        <li>↩️ Returns & refunds</li>
+                        <li>🔍 Product info & comparisons</li>
+                        <li>💡 Personalized recommendations</li>
+                    </ul>
+                    <p>How can I help you today?</p>
+                </div>
+            </div>
+        </div>
+        <div class="chatbot-suggestions" id="chatbotSuggestions">
+            <button class="suggestion-chip" data-msg="Where is my order?">📦 Track Order</button>
+            <button class="suggestion-chip" data-msg="I want to return an item">↩️ Return Item</button>
+            <button class="suggestion-chip" data-msg="Tell me about the Nova Pro Headphones">🎧 Product Info</button>
+            <button class="suggestion-chip" data-msg="I need a recommendation for a gift under $500">💡
+                Recommend</button>
+        </div>
+        <div class="chatbot-input-area">
+            <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Ask me anything..."
+                autocomplete="off">
+            <button class="chatbot-send" id="chatbotSend">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 2L11 13"></path>
+                    <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script src="chatbot.js"></script>
+</body>
+
+</html>
