@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuxeHomes Realty — AI Property Assistant Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #D4A574;
+            --primary-light: #E8C9A0;
+            --primary-dark: #B8894E;
+            --accent: #8B7355;
+            --bg: #0A0908;
+            --bg2: #120F0C;
+            --card: #1A1512;
+            --text: #FDF6EE;
+            --text2: #C9B99A;
+            --text3: #7A7066;
+            --border: rgba(212, 165, 116, 0.12);
+            --font: 'Inter', sans-serif
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 9, 8, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border)
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 1.1rem
+        }
+
+        .nav-brand .icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+            align-items: center
+        }
+
+        .nav-links a {
+            font-size: .85rem;
+            font-weight: 500;
+            color: var(--text3);
+            transition: .3s
+        }
+
+        .nav-links a:hover {
+            color: var(--text)
+        }
+
+        .nav-cta {
+            background: var(--primary) !important;
+            color: #0A0908 !important;
+            padding: 10px 22px;
+            border-radius: 100px;
+            font-weight: 700
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 140px 24px 100px;
+            position: relative
+        }
+
+        .hero-glow {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(ellipse, rgba(212, 165, 116, 0.06) 0%, transparent 70%);
+            pointer-events: none
+        }
+
+        .hero h1 {
+            font-size: clamp(2.4rem, 5vw, 4rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 20%, var(--primary-light) 60%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text
+        }
+
+        .hero-sub {
+            font-size: 1.05rem;
+            color: var(--text3);
+            max-width: 540px;
+            margin: 0 auto 36px;
+            line-height: 1.8
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 50px
+        }
+
+        .stat {
+            text-align: center
+        }
+
+        .stat-num {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--primary-light)
+        }
+
+        .stat-label {
+            font-size: .72rem;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: 1.5px
+        }
+
+        .properties {
+            padding: 80px 24px;
+            max-width: 1100px;
+            margin: 0 auto
+        }
+
+        .section-head {
+            text-align: center;
+            margin-bottom: 48px
+        }
+
+        .section-tag {
+            font-size: .75rem;
+            font-weight: 600;
+            color: var(--primary-light);
+            text-transform: uppercase;
+            letter-spacing: 3px
+        }
+
+        .section-head h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-top: 8px
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px
+        }
+
+        .prop-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: .3s;
+            cursor: pointer
+        }
+
+        .prop-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4)
+        }
+
+        .prop-img {
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            position: relative
+        }
+
+        .prop-img.luxury {
+            background: linear-gradient(135deg, #1a1510, #0d0a07)
+        }
+
+        .prop-img.modern {
+            background: linear-gradient(135deg, #10120d, #0a0b08)
+        }
+
+        .prop-img.classic {
+            background: linear-gradient(135deg, #12100e, #0b0908)
+        }
+
+        .prop-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            font-size: .68rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 100px;
+            background: var(--primary);
+            color: #0A0908
+        }
+
+        .prop-info {
+            padding: 20px
+        }
+
+        .prop-price {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--primary-light);
+            margin-bottom: 4px
+        }
+
+        .prop-info h3 {
+            font-size: .95rem;
+            font-weight: 600;
+            margin-bottom: 8px
+        }
+
+        .prop-details {
+            display: flex;
+            gap: 12px;
+            font-size: .75rem;
+            color: var(--text3)
+        }
+
+        .prop-details span {
+            display: flex;
+            align-items: center;
+            gap: 4px
+        }
+
+        .features {
+            padding: 80px 24px;
+            background: var(--bg2);
+            text-align: center
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            max-width: 900px;
+            margin: 0 auto
+        }
+
+        .feature {
+            padding: 24px 16px
+        }
+
+        .feature-icon {
+            font-size: 1.8rem;
+            margin-bottom: 10px
+        }
+
+        .feature h4 {
+            font-size: .88rem;
+            font-weight: 700;
+            margin-bottom: 4px
+        }
+
+        .feature p {
+            font-size: .75rem;
+            color: var(--text3)
+        }
+
+        .footer {
+            padding: 32px;
+            text-align: center;
+            border-top: 1px solid var(--border)
+        }
+
+        .footer p {
+            color: var(--text3);
+            font-size: .8rem
+        }
+
+        .footer a {
+            color: var(--primary-light)
+        }
+
+        /* Chatbot */
+        #chatbotToggle {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px rgba(212, 165, 116, 0.3);
+            z-index: 9999;
+            color: #0A0908;
+            animation: bounce 2s ease infinite
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-6px)
+            }
+        }
+
+        #chatbotWindow {
+            position: fixed;
+            bottom: 96px;
+            right: 24px;
+            width: 380px;
+            height: 520px;
+            background: var(--bg);
+            border-radius: 20px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 9999;
+            border: 1px solid var(--border)
+        }
+
+        #chatbotWindow.open {
+            display: flex;
+            animation: slideUp .3s ease
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative
+        }
+
+        .chat-header-av {
+            width: 38px;
+            height: 38px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem
+        }
+
+        .chat-header h4 {
+            color: #0A0908;
+            font-size: .92rem;
+            font-weight: 700
+        }
+
+        .chat-header span {
+            color: rgba(10, 9, 8, 0.7);
+            font-size: .72rem
+        }
+
+        .chat-close {
+            position: absolute;
+            right: 14px;
+            top: 12px;
+            background: none;
+            border: none;
+            color: rgba(10, 9, 8, 0.6);
+            font-size: 1.4rem;
+            cursor: pointer
+        }
+
+        .chat-msgs {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .msg {
+            display: flex;
+            gap: 8px;
+            max-width: 88%;
+            animation: fadeIn .3s ease
+        }
+
+        .msg.bot {
+            align-self: flex-start
+        }
+
+        .msg.user {
+            align-self: flex-end;
+            flex-direction: row-reverse
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .msg-av {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .8rem;
+            flex-shrink: 0
+        }
+
+        .msg.bot .msg-av {
+            background: rgba(212, 165, 116, 0.15)
+        }
+
+        .msg.user .msg-av {
+            background: rgba(139, 115, 85, 0.15)
+        }
+
+        .msg-bubble {
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-size: .82rem;
+            line-height: 1.6;
+            color: var(--text)
+        }
+
+        .msg.bot .msg-bubble {
+            background: var(--card);
+            border-bottom-left-radius: 4px
+        }
+
+        .msg.user .msg-bubble {
+            background: var(--primary-dark);
+            border-bottom-right-radius: 4px
+        }
+
+        .msg-bubble strong {
+            font-weight: 700
+        }
+
+        .suggestions {
+            padding: 8px 14px;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap
+        }
+
+        .chip {
+            padding: 6px 12px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: rgba(212, 165, 116, 0.06);
+            color: var(--primary-light);
+            font-size: .72rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: .2s
+        }
+
+        .chip:hover {
+            background: rgba(212, 165, 116, 0.15)
+        }
+
+        .chat-input {
+            padding: 10px 14px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 8px
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            font-size: .82rem;
+            font-family: inherit;
+            outline: none
+        }
+
+        .chat-input input:focus {
+            border-color: var(--primary)
+        }
+
+        .chat-input button {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: none;
+            color: #0A0908;
+            cursor: pointer;
+            font-size: .9rem
+        }
+
+        .typing span {
+            width: 5px;
+            height: 5px;
+            background: var(--text3);
+            border-radius: 50%;
+            animation: dot 1.4s ease infinite;
+            display: inline-block
+        }
+
+        .typing span:nth-child(2) {
+            animation-delay: .2s
+        }
+
+        .typing span:nth-child(3) {
+            animation-delay: .4s
+        }
+
+        @keyframes dot {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(.6);
+                opacity: .4
+            }
+
+            40% {
+                transform: scale(1);
+                opacity: 1
+            }
+        }
+
+        @media(max-width:768px) {
+            .grid {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .nav-links {
+                display: none
+            }
+
+            #chatbotWindow {
+                width: calc(100vw - 16px);
+                right: 8px;
+                height: 65vh
+            }
+        }
+
+        @media(max-width:480px) {
+            .grid {
+                grid-template-columns: 1fr
+            }
+
+            .hero-stats {
+                flex-wrap: wrap;
+                gap: 24px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav">
+        <a href="#" class="nav-brand">
+            <div class="icon">🏠</div><span>LuxeHomes Realty</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#listings">Listings</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#" class="nav-cta">Schedule Viewing</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-glow"></div>
+        <div style="position:relative;z-index:2;max-width:700px">
+            <div
+                style="display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:600;color:var(--primary-light);padding:8px 16px;border-radius:100px;border:1px solid var(--border);background:rgba(212,165,116,0.06);margin-bottom:24px">
+                <span style="width:8px;height:8px;background:var(--primary);border-radius:50%"></span>
+                AI-Powered Property Search
+            </div>
+            <h1>Find Your<br>Dream Home</h1>
+            <p class="hero-sub">Our AI assistant helps you discover properties, schedule viewings, and get market
+                insights — 24/7, instantly.</p>
+            <div class="hero-stats">
+                <div class="stat"><span class="stat-num">250+</span><span class="stat-label">Listings</span></div>
+                <div class="stat"><span class="stat-num">$2.5M+</span><span class="stat-label">Avg Sold</span></div>
+                <div class="stat"><span class="stat-num">98%</span><span class="stat-label">Satisfaction</span></div>
+                <div class="stat"><span class="stat-num">48hr</span><span class="stat-label">Avg Closing</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="properties" id="listings">
+        <div class="section-head">
+            <span class="section-tag">Featured Listings</span>
+            <h2>Exclusive Properties</h2>
+        </div>
+        <div class="grid">
+            <div class="prop-card">
+                <div class="prop-img luxury"><span class="prop-badge">Featured</span>🏡</div>
+                <div class="prop-info">
+                    <div class="prop-price">$1,250,000</div>
+                    <h3>Sunset Villa — Beverly Hills</h3>
+                    <div class="prop-details"><span>🛏 5 Beds</span><span>🚿 4 Baths</span><span>📐 4,200 sqft</span>
+                    </div>
+                </div>
+            </div>
+            <div class="prop-card">
+                <div class="prop-img modern"><span class="prop-badge">New</span>🏢</div>
+                <div class="prop-info">
+                    <div class="prop-price">$890,000</div>
+                    <h3>Skyline Penthouse — Downtown</h3>
+                    <div class="prop-details"><span>🛏 3 Beds</span><span>🚿 2 Baths</span><span>📐 2,800 sqft</span>
+                    </div>
+                </div>
+            </div>
+            <div class="prop-card">
+                <div class="prop-img classic"><span class="prop-badge">Open House</span>🏘️</div>
+                <div class="prop-info">
+                    <div class="prop-price">$650,000</div>
+                    <h3>Oak Manor — Suburban Estate</h3>
+                    <div class="prop-details"><span>🛏 4 Beds</span><span>🚿 3 Baths</span><span>📐 3,500 sqft</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="services">
+        <div class="section-head">
+            <span class="section-tag">Why Choose Us</span>
+            <h2>Premium Service</h2>
+        </div>
+        <div class="features-grid">
+            <div class="feature">
+                <div class="feature-icon">🤖</div>
+                <h4>AI Property Match</h4>
+                <p>Smart matching based on your preferences</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🏠</div>
+                <h4>Virtual Tours</h4>
+                <p>360° walkthrough from anywhere</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📊</div>
+                <h4>Market Analysis</h4>
+                <p>Real-time pricing and trends</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🤝</div>
+                <h4>Dedicated Agent</h4>
+                <p>Personal support from start to close</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>AI Chatbot Demo — Built by <a href="https://bouazzi1.github.io/ai-portfolio/">AI Automation Studio</a></p>
+    </footer>
+
+    <button id="chatbotToggle">💬</button>
+    <div id="chatbotWindow">
+        <div class="chat-header">
+            <div class="chat-header-av">🏠</div>
+            <div>
+                <h4>LuxeHomes AI Agent</h4><span>● Online — Search instantly</span>
+            </div>
+            <button class="chat-close" id="chatClose">×</button>
+        </div>
+        <div class="chat-msgs" id="chatMsgs"></div>
+        <div class="suggestions" id="chatSuggestions">
+            <button class="chip" data-msg="Show me available properties">🏠 Browse Listings</button>
+            <button class="chip" data-msg="I want to schedule a viewing">📅 Schedule Viewing</button>
+            <button class="chip" data-msg="What's the market like right now?">📊 Market Insights</button>
+            <button class="chip" data-msg="I want to sell my home">💰 Sell My Home</button>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Ask about properties, viewings...">
+            <button id="chatSend">➤</button>
+        </div>
+    </div>
+
+    <script>
+        const KB = [
+            { p: ["hello", "hi", "hey"], r: "Welcome to **LuxeHomes Realty**! 🏠 I'm your AI property assistant. I can help you:\n\n• 🏡 Browse exclusive listings\n• 📅 Schedule private viewings\n• 📊 Get market insights\n• 💰 Get a home valuation\n• 🏗️ Learn about neighborhoods\n\nAre you looking to buy or sell?" },
+            { p: ["property", "properties", "listing", "available", "browse", "show me", "buy", "home", "house", "apartment", "condo"], r: "🏡 **Featured Properties:**\n\n• **Sunset Villa** — $1,250,000\n  5 bed / 4 bath / 4,200 sqft — Beverly Hills\n\n• **Skyline Penthouse** — $890,000\n  3 bed / 2 bath / 2,800 sqft — Downtown\n\n• **Oak Manor** — $650,000\n  4 bed / 3 bath / 3,500 sqft — Suburban\n\n• **Marina Loft** — $475,000\n  2 bed / 2 bath / 1,600 sqft — Waterfront\n\n• **Garden Cottage** — $320,000\n  3 bed / 2 bath / 1,800 sqft — Country\n\nWant details on any property? Or tell me your budget & preferences!" },
+            { p: ["viewing", "visit", "tour", "schedule", "see", "walk"], r: "📅 **Schedule a Viewing:**\n\nI'd love to set that up! Which property interests you?\n\n**Available this week:**\n• Sunset Villa — Sat 2:00 PM, Sun 11:00 AM\n• Skyline Penthouse — Fri 5:00 PM, Sat 10:00 AM\n• Oak Manor — Open House Sun 1:00-4:00 PM\n\nJust tell me your name and preferred time, and I'll confirm your viewing! 🗓️" },
+            { p: ["market", "price", "trend", "value", "worth", "neighborhood", "area"], r: "📊 **Market Insights (Q1 2026):**\n\n• **Beverly Hills:** +8% YoY — Avg $1.8M\n• **Downtown:** +12% YoY — Avg $750K\n• **Suburban:** +5% YoY — Avg $550K\n• **Waterfront:** +15% YoY — Avg $900K\n\n🔥 **Hot sectors:** Waterfront & Downtown condos\n📈 **Forecast:** 6-8% appreciation expected\n\nWant a detailed analysis for a specific area?" },
+            { p: ["sell", "selling", "list", "valuation", "how much is", "my home"], r: "💰 **Sell With Us:**\n\nOur AI-powered valuation gives you an instant estimate!\n\nTo get started, I need:\n1. 📍 Property address\n2. 🛏 Number of bedrooms/bathrooms\n3. 📐 Approximate square footage\n4. 📸 Recent renovations?\n\n**Why LuxeHomes?**\n• Average 12 days to sell\n• 98% of asking price achieved\n• Professional staging & photography included\n• 2.5% commission (below industry avg)" },
+            { p: ["mortgage", "finance", "loan", "afford", "payment", "down payment"], r: "💳 **Financing Options:**\n\n• **Conventional:** 3-20% down, 6.5-7% rate\n• **FHA:** 3.5% down, credit from 580\n• **VA:** 0% down for veterans\n• **Jumbo:** For properties over $726,200\n\n**Quick estimate for $650K home:**\n• 20% down → $3,200/mo\n• 10% down → $3,800/mo\n• 3.5% down → $4,100/mo\n\nWant me to connect you with our mortgage partner? 🏦" },
+            { p: ["contact", "agent", "call", "email", "phone"], r: "📞 **Contact Our Team:**\n\n• **Office:** (555) 789-0123\n• **Email:** hello@luxehomes.com\n• **WhatsApp:** (555) 789-0124\n• **Office Hours:** Mon-Sat 9AM-7PM\n\n🏢 **Visit:** 789 Luxury Lane, Suite 100\n\nOr I can schedule a call with an agent right now! Just tell me your preferred time." },
+            { p: ["thank", "thanks", "great", "perfect"], r: "You're welcome! 😊 Finding your dream home should be exciting, not stressful.\n\n🏠 Ready to schedule a viewing? Just ask!\n📞 Call: (555) 789-0123\n🌐 luxehomes.com" }
+        ];
+        const FALLBACK = "Great question! I can help with:\n\n• 🏡 **Property listings** & details\n• 📅 **Schedule viewings**\n• 📊 **Market insights** & trends\n• 💰 **Sell your home**\n• 💳 **Financing options**\n\nWhat would you like to explore? 🏠";
+        const msgs = document.getElementById('chatMsgs'), inp = document.getElementById('chatInput'), tog = document.getElementById('chatbotToggle'), win = document.getElementById('chatbotWindow');
+        function addMsg(t, s) { const d = document.createElement('div'); d.className = `msg ${s}`; d.innerHTML = `<div class="msg-av">${s === 'bot' ? '🏠' : '👤'}</div><div class="msg-bubble">${t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n\n/g, '</p><p>').replace(/\n• /g, '<br>• ').replace(/\n/g, '<br>').replace(/^/, '<p>').replace(/$/, '</p>')}</div>`; msgs.appendChild(d); msgs.scrollTop = 9999 }
+        function getResp(m) { const l = m.toLowerCase(); for (const e of KB) { for (const p of e.p) if (l.includes(p)) return e.r } return FALLBACK }
+        addMsg("Welcome to **LuxeHomes Realty**! 🏠✨\n\nI'm your AI property assistant. Whether you're buying, selling, or just browsing — I'm here to help!\n\nWhat are you looking for today?", 'bot');
+        let open = false;
+        tog.onclick = () => { open = true; win.classList.add('open'); tog.style.display = 'none'; inp.focus() };
+        document.getElementById('chatClose').onclick = () => { open = false; win.classList.remove('open'); tog.style.display = 'flex' };
+        function send() { const t = inp.value.trim(); if (!t) return; addMsg(t, 'user'); inp.value = ''; document.getElementById('chatSuggestions').style.display = 'none'; const ty = document.createElement('div'); ty.className = 'msg bot'; ty.id = 'typ'; ty.innerHTML = '<div class="msg-av">🏠</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>'; msgs.appendChild(ty); msgs.scrollTop = 9999; setTimeout(() => { document.getElementById('typ')?.remove(); addMsg(getResp(t), 'bot') }, 400 + Math.random() * 600) }
+        document.getElementById('chatSend').onclick = send;
+        inp.onkeypress = e => { if (e.key === 'Enter') send() };
+        document.querySelectorAll('.chip').forEach(c => c.onclick = () => { inp.value = c.dataset.msg; send() });
+    </script>
+</body>
+
+</html>

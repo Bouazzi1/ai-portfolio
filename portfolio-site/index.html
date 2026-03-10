@@ -388,8 +388,8 @@
 
         .portfolio-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
         }
 
         .portfolio-card {
@@ -409,11 +409,11 @@
         }
 
         .portfolio-preview {
-            height: 220px;
+            height: 160px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4rem;
+            font-size: 3rem;
             position: relative;
             overflow: hidden;
         }
@@ -424,6 +424,26 @@
 
         .portfolio-preview.ecommerce {
             background: linear-gradient(135deg, #0F0F18, #09090B);
+        }
+
+        .portfolio-preview.healthcare {
+            background: linear-gradient(135deg, #071410, #030B0A);
+        }
+
+        .portfolio-preview.realestate {
+            background: linear-gradient(135deg, #120F0C, #0A0908);
+        }
+
+        .portfolio-preview.saas {
+            background: linear-gradient(135deg, #0C0914, #07050E);
+        }
+
+        .portfolio-preview.education {
+            background: linear-gradient(135deg, #110F0A, #0B0A07);
+        }
+
+        .portfolio-preview.automation {
+            background: linear-gradient(135deg, #0A1020, #050818);
         }
 
         .portfolio-preview::after {
@@ -461,6 +481,36 @@
             background: rgba(124, 92, 252, 0.12);
             color: #A78BFA;
             border: 1px solid rgba(124, 92, 252, 0.2);
+        }
+
+        .portfolio-badge.green {
+            background: rgba(16, 185, 129, 0.12);
+            color: #34D399;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .portfolio-badge.amber {
+            background: rgba(212, 165, 116, 0.12);
+            color: #E8C9A0;
+            border: 1px solid rgba(212, 165, 116, 0.2);
+        }
+
+        .portfolio-badge.violet {
+            background: rgba(139, 92, 246, 0.12);
+            color: #A78BFA;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .portfolio-badge.orange {
+            background: rgba(245, 158, 11, 0.12);
+            color: #FBBF24;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .portfolio-badge.blue {
+            background: rgba(59, 130, 246, 0.12);
+            color: #60A5FA;
+            border: 1px solid rgba(59, 130, 246, 0.2);
         }
 
         .portfolio-info h3 {
@@ -627,9 +677,12 @@
                 display: none;
             }
 
-            .services-grid,
-            .portfolio-grid {
+            .services-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr 1fr;
             }
 
             .process-grid {
@@ -769,12 +822,9 @@
                     <div class="portfolio-preview restaurant">🍽️</div>
                     <div class="portfolio-info">
                         <span class="portfolio-badge gold">Restaurant</span>
-                        <h3>La Maison Dorée — Fine Dining AI Concierge</h3>
-                        <p>AI chatbot handling menu inquiries, reservations, dietary requirements, wine pairings, and
-                            event bookings for a 2-Michelin-star restaurant.</p>
+                        <h3>La Maison Dorée — AI Concierge</h3>
+                        <p>Menu inquiries, reservations, dietary needs, wine pairings & event bookings.</p>
                         <div class="portfolio-tags">
-                            <span class="portfolio-tag">AI Chatbot</span>
-                            <span class="portfolio-tag">RAG</span>
                             <span class="portfolio-tag">Knowledge Base</span>
                             <span class="portfolio-tag">Multilingual</span>
                         </div>
@@ -785,14 +835,63 @@
                     <div class="portfolio-preview ecommerce">🛍️</div>
                     <div class="portfolio-info">
                         <span class="portfolio-badge purple">E-Commerce</span>
-                        <h3>NovaTech — AI Customer Support Bot</h3>
-                        <p>Full e-commerce support chatbot with order tracking, returns processing, product search,
-                            personalized recommendations, and promo codes.</p>
+                        <h3>NovaTech — Customer Support Bot</h3>
+                        <p>Order tracking, returns, product search, recommendations & promo codes.</p>
                         <div class="portfolio-tags">
-                            <span class="portfolio-tag">E-Commerce</span>
                             <span class="portfolio-tag">Order Tracking</span>
                             <span class="portfolio-tag">Product Catalog</span>
-                            <span class="portfolio-tag">Returns</span>
+                        </div>
+                        <div class="portfolio-link">Try live demo →</div>
+                    </div>
+                </a>
+                <a href="demos/healthcare-bot/index.html" class="portfolio-card">
+                    <div class="portfolio-preview healthcare">🏥</div>
+                    <div class="portfolio-info">
+                        <span class="portfolio-badge green">Healthcare</span>
+                        <h3>MedCare — Appointment Bot</h3>
+                        <p>24/7 appointment booking, doctor search, insurance info & department routing.</p>
+                        <div class="portfolio-tags">
+                            <span class="portfolio-tag">Appointments</span>
+                            <span class="portfolio-tag">Insurance</span>
+                        </div>
+                        <div class="portfolio-link">Try live demo →</div>
+                    </div>
+                </a>
+                <a href="demos/realestate-bot/index.html" class="portfolio-card">
+                    <div class="portfolio-preview realestate">🏠</div>
+                    <div class="portfolio-info">
+                        <span class="portfolio-badge amber">Real Estate</span>
+                        <h3>LuxeHomes — Property Assistant</h3>
+                        <p>Property search, viewings, market analysis, mortgage info & home valuations.</p>
+                        <div class="portfolio-tags">
+                            <span class="portfolio-tag">Listings</span>
+                            <span class="portfolio-tag">Lead Capture</span>
+                        </div>
+                        <div class="portfolio-link">Try live demo →</div>
+                    </div>
+                </a>
+                <a href="demos/saas-bot/index.html" class="portfolio-card">
+                    <div class="portfolio-preview saas">☁️</div>
+                    <div class="portfolio-info">
+                        <span class="portfolio-badge violet">SaaS</span>
+                        <h3>CloudSync — Onboarding Guide</h3>
+                        <p>Setup wizard, feature tours, pricing Q&A, integrations & tech support.</p>
+                        <div class="portfolio-tags">
+                            <span class="portfolio-tag">Onboarding</span>
+                            <span class="portfolio-tag">Tech Support</span>
+                        </div>
+                        <div class="portfolio-link">Try live demo →</div>
+                    </div>
+                </a>
+                <a href="demos/education-bot/index.html" class="portfolio-card">
+                    <div class="portfolio-preview education">🎓</div>
+                    <div class="portfolio-info">
+                        <span class="portfolio-badge orange">Education</span>
+                        <h3>SkillForge — Course Advisor</h3>
+                        <p>Course catalog, enrollment, certifications, learning paths & student support.</p>
+                        <div class="portfolio-tags">
+                            <span class="portfolio-tag">Enrollment</span>
+                            <span class="portfolio-tag">Recommendations</span>
                         </div>
                         <div class="portfolio-link">Try live demo →</div>
                     </div>

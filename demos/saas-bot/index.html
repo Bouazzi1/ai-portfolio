@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudSync — AI Onboarding Assistant Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8B5CF6;
+            --primary-light: #A78BFA;
+            --primary-dark: #7C3AED;
+            --accent: #EC4899;
+            --accent2: #06B6D4;
+            --bg: #07050E;
+            --bg2: #0C0914;
+            --card: #13101E;
+            --text: #F5F3FF;
+            --text2: #C4B5FD;
+            --text3: #6B7280;
+            --border: rgba(139, 92, 246, 0.12);
+            --font: 'Inter', sans-serif
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(7, 5, 14, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border)
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 1.1rem
+        }
+
+        .nav-brand .icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+            align-items: center
+        }
+
+        .nav-links a {
+            font-size: .85rem;
+            font-weight: 500;
+            color: var(--text3);
+            transition: .3s
+        }
+
+        .nav-links a:hover {
+            color: var(--text)
+        }
+
+        .nav-cta {
+            background: var(--primary) !important;
+            color: white !important;
+            padding: 10px 22px;
+            border-radius: 100px;
+            font-weight: 600
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 140px 24px 100px;
+            position: relative
+        }
+
+        .hero-glow {
+            position: absolute;
+            top: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(ellipse, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
+            pointer-events: none
+        }
+
+        .hero-glow2 {
+            position: absolute;
+            bottom: 15%;
+            right: 15%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(ellipse, rgba(236, 72, 153, 0.05) 0%, transparent 70%);
+            pointer-events: none
+        }
+
+        .hero h1 {
+            font-size: clamp(2.4rem, 5vw, 4rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 10%, var(--primary-light) 50%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text
+        }
+
+        .hero-sub {
+            font-size: 1.05rem;
+            color: var(--text3);
+            max-width: 540px;
+            margin: 0 auto 36px;
+            line-height: 1.8
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 50px
+        }
+
+        .stat {
+            text-align: center
+        }
+
+        .stat-num {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-light), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .stat-label {
+            font-size: .72rem;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: 1.5px
+        }
+
+        .features {
+            padding: 80px 24px;
+            max-width: 1100px;
+            margin: 0 auto
+        }
+
+        .section-head {
+            text-align: center;
+            margin-bottom: 48px
+        }
+
+        .section-tag {
+            font-size: .75rem;
+            font-weight: 600;
+            color: var(--primary-light);
+            text-transform: uppercase;
+            letter-spacing: 3px
+        }
+
+        .section-head h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-top: 8px
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px 24px;
+            transition: .3s
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4)
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 16px
+        }
+
+        .card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 8px
+        }
+
+        .card p {
+            font-size: .82rem;
+            color: var(--text3);
+            line-height: 1.6
+        }
+
+        .pricing {
+            padding: 80px 24px;
+            background: var(--bg2);
+            text-align: center
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 900px;
+            margin: 0 auto
+        }
+
+        .plan {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px 24px;
+            position: relative;
+            transition: .3s
+        }
+
+        .plan:hover {
+            transform: translateY(-4px)
+        }
+
+        .plan.popular {
+            border-color: var(--primary)
+        }
+
+        .plan.popular::after {
+            content: 'Most Popular';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            font-size: .68rem;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 100px
+        }
+
+        .plan-name {
+            font-size: .85rem;
+            font-weight: 600;
+            color: var(--text3);
+            margin-bottom: 8px
+        }
+
+        .plan-price {
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 4px
+        }
+
+        .plan-price span {
+            font-size: .85rem;
+            font-weight: 400;
+            color: var(--text3)
+        }
+
+        .plan-features {
+            list-style: none;
+            margin: 20px 0;
+            text-align: left
+        }
+
+        .plan-features li {
+            font-size: .8rem;
+            color: var(--text2);
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04)
+        }
+
+        .plan-features li::before {
+            content: '✓ ';
+            color: var(--primary-light)
+        }
+
+        .footer {
+            padding: 32px;
+            text-align: center;
+            border-top: 1px solid var(--border)
+        }
+
+        .footer p {
+            color: var(--text3);
+            font-size: .8rem
+        }
+
+        .footer a {
+            color: var(--primary-light)
+        }
+
+        /* Chatbot */
+        #chatbotToggle {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.3);
+            z-index: 9999;
+            color: white;
+            animation: bounce 2s ease infinite
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-6px)
+            }
+        }
+
+        #chatbotWindow {
+            position: fixed;
+            bottom: 96px;
+            right: 24px;
+            width: 380px;
+            height: 520px;
+            background: var(--bg);
+            border-radius: 20px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 9999;
+            border: 1px solid var(--border)
+        }
+
+        #chatbotWindow.open {
+            display: flex;
+            animation: slideUp .3s ease
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--accent));
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative
+        }
+
+        .chat-header-av {
+            width: 38px;
+            height: 38px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem
+        }
+
+        .chat-header h4 {
+            color: white;
+            font-size: .92rem;
+            font-weight: 700
+        }
+
+        .chat-header span {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: .72rem
+        }
+
+        .chat-close {
+            position: absolute;
+            right: 14px;
+            top: 12px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.4rem;
+            cursor: pointer
+        }
+
+        .chat-msgs {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .msg {
+            display: flex;
+            gap: 8px;
+            max-width: 88%;
+            animation: fadeIn .3s ease
+        }
+
+        .msg.bot {
+            align-self: flex-start
+        }
+
+        .msg.user {
+            align-self: flex-end;
+            flex-direction: row-reverse
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .msg-av {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .8rem;
+            flex-shrink: 0
+        }
+
+        .msg.bot .msg-av {
+            background: rgba(139, 92, 246, 0.15)
+        }
+
+        .msg.user .msg-av {
+            background: rgba(236, 72, 153, 0.15)
+        }
+
+        .msg-bubble {
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-size: .82rem;
+            line-height: 1.6;
+            color: var(--text)
+        }
+
+        .msg.bot .msg-bubble {
+            background: var(--card);
+            border-bottom-left-radius: 4px
+        }
+
+        .msg.user .msg-bubble {
+            background: var(--primary);
+            border-bottom-right-radius: 4px
+        }
+
+        .msg-bubble strong {
+            font-weight: 700
+        }
+
+        .suggestions {
+            padding: 8px 14px;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap
+        }
+
+        .chip {
+            padding: 6px 12px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: rgba(139, 92, 246, 0.06);
+            color: var(--primary-light);
+            font-size: .72rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: .2s
+        }
+
+        .chip:hover {
+            background: rgba(139, 92, 246, 0.15)
+        }
+
+        .chat-input {
+            padding: 10px 14px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 8px
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            font-size: .82rem;
+            font-family: inherit;
+            outline: none
+        }
+
+        .chat-input input:focus {
+            border-color: var(--primary)
+        }
+
+        .chat-input button {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: .9rem
+        }
+
+        .typing span {
+            width: 5px;
+            height: 5px;
+            background: var(--text3);
+            border-radius: 50%;
+            animation: dot 1.4s ease infinite;
+            display: inline-block
+        }
+
+        .typing span:nth-child(2) {
+            animation-delay: .2s
+        }
+
+        .typing span:nth-child(3) {
+            animation-delay: .4s
+        }
+
+        @keyframes dot {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(.6);
+                opacity: .4
+            }
+
+            40% {
+                transform: scale(1);
+                opacity: 1
+            }
+        }
+
+        @media(max-width:768px) {
+
+            .grid,
+            .pricing-grid {
+                grid-template-columns: 1fr
+            }
+
+            .nav-links {
+                display: none
+            }
+
+            #chatbotWindow {
+                width: calc(100vw - 16px);
+                right: 8px;
+                height: 65vh
+            }
+        }
+
+        @media(max-width:480px) {
+            .hero-stats {
+                flex-wrap: wrap;
+                gap: 24px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav">
+        <a href="#" class="nav-brand">
+            <div class="icon">☁️</div><span>CloudSync</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#" class="nav-cta">Start Free Trial</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-glow"></div>
+        <div class="hero-glow2"></div>
+        <div style="position:relative;z-index:2;max-width:700px">
+            <div
+                style="display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:600;color:var(--primary-light);padding:8px 16px;border-radius:100px;border:1px solid var(--border);background:rgba(139,92,246,0.06);margin-bottom:24px">
+                <span
+                    style="width:8px;height:8px;background:var(--accent);border-radius:50%;animation:pulse 2s ease infinite"></span>
+                AI-Powered Project Management
+            </div>
+            <h1>Ship Faster,<br>Together</h1>
+            <p class="hero-sub">The modern project management platform with AI onboarding, smart task assignment, and
+                real-time team analytics.</p>
+            <div class="hero-stats">
+                <div class="stat"><span class="stat-num">50K+</span><span class="stat-label">Teams</span></div>
+                <div class="stat"><span class="stat-num">99.9%</span><span class="stat-label">Uptime</span></div>
+                <div class="stat"><span class="stat-num">40%</span><span class="stat-label">Faster Setup</span></div>
+                <div class="stat"><span class="stat-num">4.8★</span><span class="stat-label">G2 Rating</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="section-head">
+            <span class="section-tag">Features</span>
+            <h2>Everything You Need</h2>
+        </div>
+        <div class="grid">
+            <div class="card">
+                <div class="card-icon">🤖</div>
+                <h3>AI Onboarding</h3>
+                <p>Our AI guides new users through setup in under 5 minutes. No manuals needed.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📊</div>
+                <h3>Smart Dashboards</h3>
+                <p>Real-time analytics with AI-powered insights and predictions for your projects.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔗</div>
+                <h3>100+ Integrations</h3>
+                <p>Connect with Slack, GitHub, Jira, Figma, and 100+ tools you already use.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🛡️</div>
+                <h3>Enterprise Security</h3>
+                <p>SOC 2 Type II, GDPR compliant, SSO, 2FA, and role-based access control.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <h3>Automation</h3>
+                <p>Build custom workflows with drag-n-drop. Automate status updates, assignments, and notifications.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📱</div>
+                <h3>Mobile App</h3>
+                <p>Stay connected on iOS and Android. Push notifications and offline access.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+        <div class="section-head">
+            <span class="section-tag">Pricing</span>
+            <h2>Simple, Transparent</h2>
+        </div>
+        <div class="pricing-grid">
+            <div class="plan">
+                <div class="plan-name">Starter</div>
+                <div class="plan-price">Free <span>forever</span></div>
+                <ul class="plan-features">
+                    <li>Up to 5 users</li>
+                    <li>3 projects</li>
+                    <li>Basic analytics</li>
+                    <li>Community support</li>
+                    <li>1GB storage</li>
+                </ul>
+            </div>
+            <div class="plan popular">
+                <div class="plan-name">Pro</div>
+                <div class="plan-price">$12 <span>/user/mo</span></div>
+                <ul class="plan-features">
+                    <li>Unlimited users</li>
+                    <li>Unlimited projects</li>
+                    <li>AI task assignment</li>
+                    <li>Advanced analytics</li>
+                    <li>Priority support</li>
+                    <li>100GB storage</li>
+                </ul>
+            </div>
+            <div class="plan">
+                <div class="plan-name">Enterprise</div>
+                <div class="plan-price">Custom</div>
+                <ul class="plan-features">
+                    <li>Everything in Pro</li>
+                    <li>SSO & SCIM</li>
+                    <li>Dedicated manager</li>
+                    <li>Custom integrations</li>
+                    <li>SLA guarantee</li>
+                    <li>Unlimited storage</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>AI Chatbot Demo — Built by <a href="https://bouazzi1.github.io/ai-portfolio/">AI Automation Studio</a></p>
+    </footer>
+
+    <button id="chatbotToggle">💬</button>
+    <div id="chatbotWindow">
+        <div class="chat-header">
+            <div class="chat-header-av">☁️</div>
+            <div>
+                <h4>CloudSync AI Guide</h4><span>● Online — I'll help you get started</span>
+            </div>
+            <button class="chat-close" id="chatClose">×</button>
+        </div>
+        <div class="chat-msgs" id="chatMsgs"></div>
+        <div class="suggestions" id="chatSuggestions">
+            <button class="chip" data-msg="How do I get started?">🚀 Get Started</button>
+            <button class="chip" data-msg="What are your pricing plans?">💰 Pricing</button>
+            <button class="chip" data-msg="What integrations do you support?">🔗 Integrations</button>
+            <button class="chip" data-msg="I need technical help">🔧 Tech Support</button>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Ask about features, setup, pricing...">
+            <button id="chatSend">➤</button>
+        </div>
+    </div>
+
+    <script>
+        const KB = [
+            { p: ["hello", "hi", "hey"], r: "Hey there! 👋 I'm the **CloudSync AI Guide**. I'm here to help you:\n\n• 🚀 Get started in minutes\n• 💡 Explore features\n• 💰 Find the right plan\n• 🔧 Troubleshoot issues\n• 🔗 Set up integrations\n\nWhat would you like to do?" },
+            { p: ["start", "setup", "begin", "onboard", "create", "sign up", "register", "account"], r: "🚀 **Getting Started with CloudSync:**\n\n**Step 1:** Sign up free (no credit card needed)\n**Step 2:** Create your first workspace\n**Step 3:** Invite your team members\n**Step 4:** Create a project & add tasks\n\n💡 **Pro tip:** Our AI will automatically suggest a workspace template based on your industry!\n\n⏱️ Average setup time: **under 5 minutes**\n\nWant me to walk you through any specific step?" },
+            { p: ["price", "pricing", "plan", "cost", "how much", "free", "pay", "billing", "subscription"], r: "💰 **CloudSync Plans:**\n\n• **Starter (Free)** — 5 users, 3 projects, basic analytics\n• **Pro ($12/user/mo)** — Unlimited everything, AI features, priority support\n• **Enterprise (Custom)** — SSO, dedicated manager, SLA\n\n🏷️ **Annual billing saves 20%!**\n\n💡 Start free, upgrade anytime. No commitment, cancel with one click.\n\nWant to start a free trial of Pro? No credit card required!" },
+            { p: ["feature", "what can", "do", "capability", "function"], r: "⚡ **Key Features:**\n\n• **AI Task Assignment** — Auto-assigns based on skills & workload\n• **Smart Dashboards** — Real-time project health & predictions\n• **Automation Builder** — Drag-drop workflow automation\n• **Time Tracking** — Built-in timer with reports\n• **100+ Integrations** — Slack, GitHub, Jira, Figma, etc.\n• **Mobile App** — iOS & Android\n• **Comments & Mentions** — Real-time collaboration\n\nWhich feature would you like to learn more about?" },
+            { p: ["integration", "connect", "slack", "github", "jira", "figma", "api", "zapier"], r: "🔗 **Integrations:**\n\n**Communication:** Slack, MS Teams, Discord\n**Development:** GitHub, GitLab, Bitbucket\n**Design:** Figma, Adobe XD, Canva\n**Project Mgmt:** Jira, Asana (import)\n**Storage:** Google Drive, Dropbox, OneDrive\n**Automation:** Zapier, Make.com, n8n\n**CRM:** Salesforce, HubSpot\n\n📡 **REST API** available for custom integrations\n📚 **Webhooks** for real-time event triggers\n\nNeed help setting up a specific integration?" },
+            { p: ["help", "support", "issue", "problem", "bug", "error", "not working", "broken", "fix"], r: "🔧 **Technical Support:**\n\nLet me help! Common solutions:\n\n• **Can't log in?** → Clear cache or try incognito\n• **Sync issues?** → Check your internet, try refresh\n• **Slow loading?** → Disable browser extensions\n• **Import failed?** → Check file format (CSV/JSON)\n\n📧 **Email:** support@cloudsync.app\n💬 **Live chat:** Available 24/7 on Pro & Enterprise\n📞 **Phone:** Enterprise plan only\n📖 **Docs:** docs.cloudsync.app\n\nDescribe your issue and I'll try to help!" },
+            { p: ["security", "safe", "secure", "gdpr", "soc", "compliance", "data", "privacy"], r: "🛡️ **Security & Compliance:**\n\n• **SOC 2 Type II** certified\n• **GDPR** compliant\n• **SSO** (SAML 2.0) — Enterprise\n• **2FA** on all plans\n• **Role-based access** control\n• **Data encryption** at rest & in transit (AES-256)\n• **99.9% uptime** SLA\n• **Daily backups** with 30-day retention\n\n📍 Data centers: US, EU, Asia-Pacific\n\nNeed our security whitepaper? I can email it to you!" },
+            { p: ["team", "invite", "user", "member", "collaborate", "colleague"], r: "👥 **Team Management:**\n\nTo invite team members:\n1. Go to **Settings → Team**\n2. Click **'Invite Members'**\n3. Enter their email addresses\n4. Assign roles (Admin, Member, Viewer)\n\n💡 **Roles:**\n• **Admin** — Full access, billing\n• **Member** — Create & edit projects\n• **Viewer** — Read-only access\n• **Guest** — Limited time access\n\nTeam joined? I'll help you set up your first project!" },
+            { p: ["thank", "thanks", "great", "perfect", "awesome"], r: "Happy to help! 😊 You're going to love CloudSync.\n\nRemember:\n• 📖 Docs: docs.cloudsync.app\n• 💬 Support: 24/7 live chat\n• 🎓 Academy: learn.cloudsync.app\n\nNeed anything else? I'm always here! 🚀" }
+        ];
+        const FALLBACK = "I can help with:\n\n• 🚀 **Getting started** — Setup & onboarding\n• 💰 **Pricing** — Plans & billing\n• ⚡ **Features** — What CloudSync can do\n• 🔗 **Integrations** — Connect your tools\n• 🔧 **Support** — Troubleshooting\n\nWhat would you like to know? 😊";
+        const msgs = document.getElementById('chatMsgs'), inp = document.getElementById('chatInput'), tog = document.getElementById('chatbotToggle'), win = document.getElementById('chatbotWindow');
+        function addMsg(t, s) { const d = document.createElement('div'); d.className = `msg ${s}`; d.innerHTML = `<div class="msg-av">${s === 'bot' ? '☁️' : '👤'}</div><div class="msg-bubble">${t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n\n/g, '</p><p>').replace(/\n• /g, '<br>• ').replace(/\n/g, '<br>').replace(/^/, '<p>').replace(/$/, '</p>')}</div>`; msgs.appendChild(d); msgs.scrollTop = 9999 }
+        function getResp(m) { const l = m.toLowerCase(); for (const e of KB) { for (const p of e.p) if (l.includes(p)) return e.r } return FALLBACK }
+        addMsg("Welcome to **CloudSync**! ☁️✨\n\nI'm your AI onboarding guide. I'll help you get set up and productive in under 5 minutes.\n\nWhat would you like to do first?", 'bot');
+        let open = false;
+        tog.onclick = () => { open = true; win.classList.add('open'); tog.style.display = 'none'; inp.focus() };
+        document.getElementById('chatClose').onclick = () => { open = false; win.classList.remove('open'); tog.style.display = 'flex' };
+        function send() { const t = inp.value.trim(); if (!t) return; addMsg(t, 'user'); inp.value = ''; document.getElementById('chatSuggestions').style.display = 'none'; const ty = document.createElement('div'); ty.className = 'msg bot'; ty.id = 'typ'; ty.innerHTML = '<div class="msg-av">☁️</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>'; msgs.appendChild(ty); msgs.scrollTop = 9999; setTimeout(() => { document.getElementById('typ')?.remove(); addMsg(getResp(t), 'bot') }, 400 + Math.random() * 600) }
+        document.getElementById('chatSend').onclick = send;
+        inp.onkeypress = e => { if (e.key === 'Enter') send() };
+        document.querySelectorAll('.chip').forEach(c => c.onclick = () => { inp.value = c.dataset.msg; send() });
+    </script>
+</body>
+
+</html>
