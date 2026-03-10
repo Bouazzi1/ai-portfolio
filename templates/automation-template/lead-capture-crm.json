@@ -1,0 +1,203 @@
+{
+    "name": "Lead Capture + CRM Pipeline — Client Template",
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "new-lead",
+                "responseMode": "lastNode",
+                "options": {}
+            },
+            "id": "webhook-lead",
+            "name": "Webhook — New Lead",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1.1,
+            "position": [
+                250,
+                300
+            ],
+            "notes": "Receives leads from website forms, chatbot, or landing pages"
+        },
+        {
+            "parameters": {
+                "jsCode": "// Parse and enrich lead data\nconst data = $input.all()[0].json;\n\n// Calculate lead score based on available info\nlet score = 0;\nif (data.email) score += 20;\nif (data.phone) score += 15;\nif (data.company) score += 25;\nif (data.budget && parseInt(data.budget) > 1000) score += 30;\nif (data.message && data.message.length > 50) score += 10;\n\nlet priority = 'low';\nif (score >= 60) priority = 'high';\nelse if (score >= 35) priority = 'medium';\n\nreturn [{\n  json: {\n    name: data.name || 'Unknown',\n    email: data.email || '',\n    phone: data.phone || '',\n    company: data.company || '',\n    message: data.message || '',\n    budget: data.budget || 'Not specified',\n    source: data.source || data.utm_source || 'website',\n    leadScore: score,\n    priority: priority,\n    timestamp: new Date().toISOString(),\n    status: 'new'\n  }\n}];"
+            },
+            "id": "code-score",
+            "name": "Score & Enrich Lead",
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                480,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "values": {
+                    "string": [
+                        {
+                            "name": "Name",
+                            "value": "={{ $json.name }}"
+                        },
+                        {
+                            "name": "Email",
+                            "value": "={{ $json.email }}"
+                        },
+                        {
+                            "name": "Phone",
+                            "value": "={{ $json.phone }}"
+                        },
+                        {
+                            "name": "Company",
+                            "value": "={{ $json.company }}"
+                        },
+                        {
+                            "name": "Budget",
+                            "value": "={{ $json.budget }}"
+                        },
+                        {
+                            "name": "Message",
+                            "value": "={{ $json.message }}"
+                        },
+                        {
+                            "name": "Source",
+                            "value": "={{ $json.source }}"
+                        },
+                        {
+                            "name": "Score",
+                            "value": "={{ $json.leadScore }}"
+                        },
+                        {
+                            "name": "Priority",
+                            "value": "={{ $json.priority }}"
+                        },
+                        {
+                            "name": "Status",
+                            "value": "={{ $json.status }}"
+                        },
+                        {
+                            "name": "Date",
+                            "value": "={{ $json.timestamp }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "sheets-crm",
+            "name": "Add to CRM (Google Sheets)",
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.2,
+            "position": [
+                720,
+                200
+            ],
+            "notes": "Adds lead to Google Sheets CRM with scoring and priority"
+        },
+        {
+            "parameters": {
+                "jsCode": "const data = $input.all()[0].json;\nconst CLIENT_NAME = 'Your Client Business';\n\nconst email = `Hi ${data.name},\\n\\nThank you for reaching out to ${CLIENT_NAME}! We're excited to learn about your needs.\\n\\nWe've received your inquiry and a team member will contact you within 24 hours.\\n\\nIn the meantime, here are some helpful resources:\\n• Our services: [SERVICES_URL]\\n• FAQ: [FAQ_URL]\\n• Book a call: [CALENDLY_LINK]\\n\\nLooking forward to working with you!\\n\\nBest regards,\\n${CLIENT_NAME} Team`;\n\nreturn [{ json: { ...data, welcomeEmail: email } }];"
+            },
+            "id": "code-welcome",
+            "name": "Generate Welcome Email",
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                720,
+                450
+            ]
+        },
+        {
+            "parameters": {
+                "fromEmail": "noreply@example.com",
+                "toEmail": "={{ $json.email }}",
+                "subject": "Welcome! We received your inquiry 🎉",
+                "text": "={{ $json.welcomeEmail }}",
+                "options": {}
+            },
+            "id": "send-welcome",
+            "name": "Send Welcome Email",
+            "type": "n8n-nodes-base.emailSend",
+            "typeVersion": 2.1,
+            "position": [
+                960,
+                450
+            ]
+        },
+        {
+            "parameters": {
+                "chatId": "TEAM_CHAT_ID",
+                "text": "🔔 *New Lead!*\n\n👤 *{{ $json.name }}*\n📧 {{ $json.email }}\n🏢 {{ $json.company }}\n💰 Budget: {{ $json.budget }}\n📊 Score: {{ $json.leadScore }} ({{ $json.priority }})\n\n💬 {{ $json.message }}",
+                "additionalFields": {
+                    "parse_mode": "Markdown"
+                }
+            },
+            "id": "telegram-notify",
+            "name": "Notify Team (Telegram)",
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1.2,
+            "position": [
+                960,
+                200
+            ],
+            "notes": "Optional: Notifies the client's team via Telegram when a high-priority lead comes in"
+        }
+    ],
+    "connections": {
+        "Webhook — New Lead": {
+            "main": [
+                [
+                    {
+                        "node": "Score & Enrich Lead",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Score & Enrich Lead": {
+            "main": [
+                [
+                    {
+                        "node": "Add to CRM (Google Sheets)",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "Generate Welcome Email",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Add to CRM (Google Sheets)": {
+            "main": [
+                [
+                    {
+                        "node": "Notify Team (Telegram)",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Generate Welcome Email": {
+            "main": [
+                [
+                    {
+                        "node": "Send Welcome Email",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "settings": {
+        "executionOrder": "v1"
+    },
+    "meta": {
+        "instanceId": "template",
+        "templateNotes": "Lead Capture + CRM Pipeline. Scores leads, adds to Google Sheets CRM, sends welcome email, and notifies team via Telegram."
+    }
+}

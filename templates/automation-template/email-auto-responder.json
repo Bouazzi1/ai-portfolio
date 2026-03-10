@@ -1,0 +1,115 @@
+{
+  "name": "AI Email Auto-Responder — Client Template",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "incoming-email",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook — Receive Email",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [250, 300],
+      "notes": "Receives incoming emails/form submissions. Connect your email provider or contact form here."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract and clean the incoming data\nconst items = $input.all();\nconst data = items[0].json;\n\nreturn [{\n  json: {\n    senderName: data.name || data.from || 'Unknown',\n    senderEmail: data.email || data.sender || '',\n    subject: data.subject || 'No Subject',\n    message: data.message || data.body || data.text || '',\n    timestamp: new Date().toISOString(),\n    // Classify the email type\n    category: classifyEmail(data.message || data.body || '')\n  }\n}];\n\nfunction classifyEmail(text) {\n  const lower = text.toLowerCase();\n  if (lower.includes('price') || lower.includes('cost') || lower.includes('quote')) return 'pricing';\n  if (lower.includes('support') || lower.includes('help') || lower.includes('issue') || lower.includes('problem')) return 'support';\n  if (lower.includes('order') || lower.includes('delivery') || lower.includes('shipping')) return 'order';\n  if (lower.includes('refund') || lower.includes('return') || lower.includes('cancel')) return 'refund';\n  if (lower.includes('partner') || lower.includes('collaboration') || lower.includes('business')) return 'partnership';\n  return 'general';\n}"
+      },
+      "id": "code-classify",
+      "name": "Classify & Parse Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "rules": [
+            { "outputIndex": 0, "value": "pricing" },
+            { "outputIndex": 1, "value": "support" },
+            { "outputIndex": 2, "value": "order" },
+            { "outputIndex": 3, "value": "refund" },
+            { "outputIndex": 4, "value": "general" }
+          ]
+        },
+        "dataPropertyName": "category",
+        "fallbackOutput": 4
+      },
+      "id": "switch-category",
+      "name": "Route by Category",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [700, 300],
+      "notes": "Routes emails to different response templates based on classification"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ==========================================\n// CLIENT RESPONSE TEMPLATES — EDIT THESE\n// ==========================================\n\nconst CLIENT_NAME = 'Your Client Business';\nconst CLIENT_EMAIL = 'hello@example.com';\nconst CLIENT_PHONE = '+1 (555) 123-4567';\n\nconst data = $input.all()[0].json;\nconst category = data.category;\n\nconst templates = {\n  pricing: `Hi ${data.senderName},\\n\\nThank you for your interest in ${CLIENT_NAME}!\\n\\nHere are our current packages:\\n• Basic: $XX/month\\n• Standard: $XX/month\\n• Premium: $XX/month\\n\\nI'd love to schedule a quick call to discuss which package best fits your needs.\\n\\nBest regards,\\n${CLIENT_NAME} Team`,\n  \n  support: `Hi ${data.senderName},\\n\\nThank you for reaching out to ${CLIENT_NAME} support!\\n\\nWe've received your message and our team is looking into it. You can expect a detailed response within 24 hours.\\n\\nFor urgent issues, please call us at ${CLIENT_PHONE}.\\n\\nBest regards,\\n${CLIENT_NAME} Support Team`,\n  \n  order: `Hi ${data.senderName},\\n\\nThank you for contacting ${CLIENT_NAME}!\\n\\nRegarding your order inquiry — our team is checking the status and will get back to you shortly with a detailed update.\\n\\nYou can also track your order at: [ORDER_TRACKING_URL]\\n\\nBest regards,\\n${CLIENT_NAME} Team`,\n  \n  refund: `Hi ${data.senderName},\\n\\nWe're sorry to hear you'd like to request a refund.\\n\\nOur return policy allows returns within 30 days. To process your request, please provide:\\n1. Order number\\n2. Reason for refund\\n3. Preferred refund method\\n\\nWe'll process your request within 3-5 business days.\\n\\nBest regards,\\n${CLIENT_NAME} Team`,\n  \n  general: `Hi ${data.senderName},\\n\\nThank you for contacting ${CLIENT_NAME}!\\n\\nWe've received your message and will get back to you within 24 hours.\\n\\nIn the meantime, you can:\\n• Visit our website: [WEBSITE_URL]\\n• Call us: ${CLIENT_PHONE}\\n• Email: ${CLIENT_EMAIL}\\n\\nBest regards,\\n${CLIENT_NAME} Team`\n};\n\nreturn [{\n  json: {\n    ...data,\n    autoReply: templates[category] || templates.general,\n    replySubject: `Re: ${data.subject}`\n  }\n}];"
+      },
+      "id": "code-templates",
+      "name": "Generate AI Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [950, 300],
+      "notes": "CUSTOMIZE: Edit the response templates for each category with client-specific info"
+    },
+    {
+      "parameters": {
+        "fromEmail": "noreply@example.com",
+        "toEmail": "={{ $json.senderEmail }}",
+        "subject": "={{ $json.replySubject }}",
+        "text": "={{ $json.autoReply }}",
+        "options": {}
+      },
+      "id": "send-email",
+      "name": "Send Auto-Reply",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [1200, 200],
+      "notes": "Configure with client's SMTP settings (Gmail, Outlook, SendGrid, etc.)"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            { "name": "timestamp", "value": "={{ $json.timestamp }}" },
+            { "name": "sender", "value": "={{ $json.senderEmail }}" },
+            { "name": "category", "value": "={{ $json.category }}" },
+            { "name": "subject", "value": "={{ $json.subject }}" },
+            { "name": "status", "value": "auto-replied" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "log-entry",
+      "name": "Log to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.2,
+      "position": [1200, 450],
+      "notes": "Logs every email + response to a Google Sheet for the client's dashboard"
+    }
+  ],
+  "connections": {
+    "Webhook — Receive Email": { "main": [[{ "node": "Classify & Parse Email", "type": "main", "index": 0 }]] },
+    "Classify & Parse Email": { "main": [[{ "node": "Route by Category", "type": "main", "index": 0 }]] },
+    "Route by Category": { "main": [
+      [{ "node": "Generate AI Response", "type": "main", "index": 0 }],
+      [{ "node": "Generate AI Response", "type": "main", "index": 0 }],
+      [{ "node": "Generate AI Response", "type": "main", "index": 0 }],
+      [{ "node": "Generate AI Response", "type": "main", "index": 0 }],
+      [{ "node": "Generate AI Response", "type": "main", "index": 0 }]
+    ]},
+    "Generate AI Response": { "main": [
+      [{ "node": "Send Auto-Reply", "type": "main", "index": 0 }, { "node": "Log to Google Sheets", "type": "main", "index": 0 }]
+    ]}
+  },
+  "settings": { "executionOrder": "v1" },
+  "meta": {
+    "instanceId": "template",
+    "templateNotes": "AI Email Auto-Responder. Classifies incoming emails and sends tailored responses. Edit 'Generate AI Response' node with client-specific templates."
+  }
+}
