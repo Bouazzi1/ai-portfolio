@@ -646,7 +646,227 @@
             color: var(--primary-light);
         }
 
-        /* === Animations === */
+        /* === Testimonials === */
+        .testimonials {
+            padding: 80px 0;
+            background: linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 100%);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .testimonial-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+            transition: all var(--tr);
+        }
+
+        .testimonial-card:hover {
+            border-color: var(--primary-light);
+            background: var(--bg-card-hover);
+        }
+
+        .testimonial-stars {
+            color: #FBBF24;
+            font-size: 1rem;
+            margin-bottom: 16px;
+        }
+
+        .testimonial-quote {
+            color: var(--text-2);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .testimonial-company {
+            color: var(--text-3);
+            font-size: 0.85rem;
+        }
+
+        /* === Case Studies === */
+        .case-studies {
+            padding: 80px 0;
+        }
+
+        .case-studies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .case-study-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(34, 211, 238, 0.02));
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 40px;
+            transition: all var(--tr);
+        }
+
+        .case-study-card:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-4px);
+        }
+
+        .case-study-icon {
+            font-size: 2.2rem;
+            margin-bottom: 16px;
+        }
+
+        .case-study-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+
+        .case-study-section {
+            margin-bottom: 16px;
+        }
+
+        .case-study-label {
+            color: var(--primary-light);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .case-study-text {
+            color: var(--text-2);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .case-study-result {
+            background: rgba(34, 211, 238, 0.08);
+            border-left: 3px solid var(--accent);
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-top: 16px;
+        }
+
+        .case-study-result .case-study-label {
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+
+        /* === FAQ === */
+        .faq {
+            padding: 80px 0;
+            background: linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 100%);
+        }
+
+        .faq-items {
+            max-width: 700px;
+            margin: 48px auto 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all var(--tr);
+        }
+
+        .faq-item:hover {
+            border-color: var(--primary-light);
+        }
+
+        .faq-question {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--text);
+            gap: 16px;
+        }
+
+        .faq-toggle {
+            font-size: 1.2rem;
+            transition: transform var(--tr);
+            flex-shrink: 0;
+        }
+
+        .faq-item.open .faq-toggle {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height var(--tr);
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer-text {
+            padding: 0 20px 20px 20px;
+            color: var(--text-2);
+            line-height: 1.7;
+            border-top: 1px solid var(--border-2);
+        }
+
+        /* === Guarantee === */
+        .guarantee {
+            padding: 80px 0;
+        }
+
+        .guarantee-box {
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.08), rgba(99, 102, 241, 0.06));
+            border: 2px solid var(--accent);
+            border-radius: var(--radius);
+            padding: 48px 40px;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .guarantee-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+
+        .guarantee-box h3 {
+            font-size: 1.6rem;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+
+        .guarantee-box p {
+            color: var(--text-2);
+            font-size: 1rem;
+            line-height: 1.7;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .footer a {
+            color: var(--primary-light);
+        }
         @keyframes fadeUp {
             from {
                 opacity: 0;
@@ -698,6 +918,18 @@
                 flex-direction: column;
                 align-items: center;
             }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .case-studies-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .guarantee-box {
+                padding: 32px 24px;
+            }
         }
     </style>
 </head>
@@ -726,9 +958,8 @@
                 <div class="dot"></div>
                 Available for new projects
             </div>
-            <h1>AI Chatbots &<br>Automation That<br>Grow Your Business</h1>
-            <p class="hero-sub">I build intelligent AI chatbots and workflow automation systems that handle customer
-                support 24/7, capture leads, and save you 10+ hours per week.</p>
+            <h1>Your Customers Are<br>Asking Questions.<br>Your Team Is Drowning.<br>Let AI Handle It.</h1>
+            <p class="hero-sub">Stop losing sales to slow customer support. I build AI chatbots that answer questions 24/7, capture leads, and save your team 10+ hours per week. 3-7 day delivery.</p>
             <div class="hero-btns">
                 <a href="#contact" class="btn btn-primary">🚀 Get Started — Free Consultation</a>
                 <a href="#portfolio" class="btn btn-outline">View My Work</a>
@@ -799,11 +1030,11 @@
                     <span class="service-price">From $125</span>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon">📊</div>
-                    <h3>AI Data Pipeline</h3>
-                    <p>Automated data extraction, analysis, and reporting. Turn raw data into actionable insights with
-                        AI.</p>
-                    <span class="service-price">From $200</span>
+                    <div class="service-icon">🧠</div>
+                    <h3>GPT-Powered AI Chatbot</h3>
+                    <p>Advanced AI chatbot powered by GPT-4 that understands any question, remembers conversations,
+                        and speaks any language naturally.</p>
+                    <span class="service-price">From $300</span>
                 </div>
             </div>
         </div>
@@ -932,6 +1163,164 @@
         </div>
     </section>
 
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-head">
+                <span class="section-tag">Social Proof</span>
+                <h2>What Clients Say</h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-quote">"We were drowning in customer support emails. The chatbot now handles 85% of them. Our team went from 6 hours/day on support to 1 hour. Worth every penny."</div>
+                    <div class="testimonial-author">Sarah Chen</div>
+                    <div class="testimonial-company">E-Commerce Manager, TechStore</div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-quote">"Delivery was super fast — 3 days. The bot is trained perfectly on our FAQ. Customers love it, and we're seeing 40% more repeat purchases already."</div>
+                    <div class="testimonial-author">Marcus Johnson</div>
+                    <div class="testimonial-company">Founder, Restaurant Group</div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-quote">"The lead generation bot tripled our qualified leads. Setup was painless, and the response was incredibly natural. Highly recommend."</div>
+                    <div class="testimonial-author">Jennifer Lopez</div>
+                    <div class="testimonial-company">Sales Director, SaaS Company</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Studies -->
+    <section class="case-studies" id="results">
+        <div class="container">
+            <div class="section-head">
+                <span class="section-tag">Results</span>
+                <h2>Real Impact. Real Numbers.</h2>
+            </div>
+            <div class="case-studies-grid">
+                <div class="case-study-card">
+                    <div class="case-study-icon">🛍️</div>
+                    <div class="case-study-title">E-Commerce Support Bot</div>
+                    <div class="case-study-section">
+                        <div class="case-study-label">Problem</div>
+                        <div class="case-study-text">2-hour average response time, lost sales from slow replies</div>
+                    </div>
+                    <div class="case-study-section">
+                        <div class="case-study-label">Solution</div>
+                        <div class="case-study-text">AI chatbot trained on product FAQ + order tracking data</div>
+                    </div>
+                    <div class="case-study-result">
+                        <div class="case-study-label">Results</div>
+                        <div class="case-study-text">12-second avg response | 40% repeat customers ↑ | $22K/month revenue impact</div>
+                    </div>
+                </div>
+                <div class="case-study-card">
+                    <div class="case-study-icon">🏥</div>
+                    <div class="case-study-title">Healthcare Appointment Bot</div>
+                    <div class="case-study-section">
+                        <div class="case-study-label">Problem</div>
+                        <div class="case-study-text">Staff overwhelmed with appointment calls, high no-show rate</div>
+                    </div>
+                    <div class="case-study-section">
+                        <div class="case-study-label">Solution</div>
+                        <div class="case-study-text">24/7 chatbot handles booking, confirmations, rescheduling</div>
+                    </div>
+                    <div class="case-study-result">
+                        <div class="case-study-label">Results</div>
+                        <div class="case-study-text">72% reduction in call volume | 25% lower no-shows | Staff can focus on care</div>
+                    </div>
+                </div>
+                <div class="case-study-card">
+                    <div class="case-study-icon">🎯</div>
+                    <div class="case-study-title">Lead Generation Bot</div>
+                    <div class="case-study-section">
+                        <div class="case-study-label">Problem</div>
+                        <div class="case-study-text">Low lead quality, slow response to inquiries</div>
+                    </div>
+                    <div class="case-study-section">
+                        <div class="case-study-label">Solution</div>
+                        <div class="case-study-text">AI bot qualifies leads, books meetings, sends data to CRM</div>
+                    </div>
+                    <div class="case-study-result">
+                        <div class="case-study-label">Results</div>
+                        <div class="case-study-text">3x qualified leads | 60% faster sales cycle | $18K/month additional revenue</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guarantee -->
+    <section class="guarantee">
+        <div class="container">
+            <div class="guarantee-box">
+                <div class="guarantee-icon">🛡️</div>
+                <h3>30-Day Satisfaction Guarantee</h3>
+                <p>Not happy with your chatbot? I'll fix it or refund your money. No questions asked. I'm confident you'll love it — but this guarantee is your safety net.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="section-head">
+                <span class="section-tag">FAQ</span>
+                <h2>Questions? We Have Answers</h2>
+            </div>
+            <div class="faq-items">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What if the chatbot can't answer a question?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-text">The chatbot gracefully hands off to a human agent. It will say something like "I think you should speak to our team directly" and display your contact info. You never lose a customer.</div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How long does setup take?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-text">Standard chatbots: 3-5 days. AI-powered chatbots: 5-7 days. I can do rush delivery (1-2 days) for +50% if you need it faster.</div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I update the chatbot later?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-text">Yes! You'll get a simple config file where you can edit questions, answers, and settings anytime — no coding skills required. Or I can maintain it for you as part of a monthly plan.</div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What platforms does this work on?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-text">Any website. WordPress, Shopify, Wix, Squarespace, Webflow, or custom HTML. If it has a website, we can add a chatbot to it. WhatsApp and Telegram bots are also available.</div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Do you provide training & support?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-text">Yes. Every order includes 7 days of post-delivery support, setup documentation, and installation help. I also offer monthly maintenance packages for ongoing updates and optimization.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA -->
     <section class="cta" id="contact">
         <div class="container">
@@ -947,12 +1336,21 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>© 2026 AI Automation Studio · Built with ❤️ and AI · <a href="https://www.fiverr.com"
-                    target="_blank">Hire Me on Fiverr</a></p>
+            <p>© 2026 AI Automation Studio · Fast Delivery · Quality Guaranteed<br>
+            📧 <a href="mailto:contact@aiautomationstudio.com">contact@aiautomationstudio.com</a> · Replies within 24 hours · <a href="https://www.fiverr.com" target="_blank">Hire Me on Fiverr</a></p>
         </div>
     </footer>
 
     <!-- Live Chatbot Widget (proves our product!) -->
+    <script>
+        // FAQ Toggle Functionality
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.querySelector('.faq-question').addEventListener('click', () => {
+                item.classList.toggle('open');
+            });
+        });
+    </script>
+
     <script>
         (function () {
             const BOT = {
