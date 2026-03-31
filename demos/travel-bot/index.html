@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust Travel — AI Travel Assistant Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0EA5E9;
+            --primary-light: #38BDF8;
+            --primary-dark: #0284C7;
+            --accent: #F97316;
+            --bg: #040A10;
+            --bg2: #081218;
+            --card: #0F1B25;
+            --text: #F0F9FF;
+            --text2: #7DD3FC;
+            --text3: #5A7A8A;
+            --border: rgba(14, 165, 233, 0.12);
+            --font: 'Inter', sans-serif
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(4, 10, 16, .85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border)
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 1.15rem
+        }
+
+        .nav-brand .icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 28px;
+            align-items: center
+        }
+
+        .nav-links a {
+            font-size: .85rem;
+            color: var(--text3);
+            font-weight: 500;
+            transition: .2s
+        }
+
+        .nav-links a:hover {
+            color: var(--text)
+        }
+
+        .nav-cta {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 100px;
+            color: white !important;
+            font-weight: 600;
+            font-size: .82rem !important
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 24px 80px;
+            position: relative
+        }
+
+        .hero-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(14, 165, 233, .08), transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%)
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            background: rgba(14, 165, 233, .08);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: .75rem;
+            font-weight: 600;
+            color: var(--primary-light);
+            margin-bottom: 24px
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5.5vw, 4.2rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff, var(--text2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text3);
+            max-width: 520px;
+            margin: 0 auto 32px
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            flex-wrap: wrap
+        }
+
+        .hero-stat h3 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-light)
+        }
+
+        .hero-stat p {
+            font-size: .78rem;
+            color: var(--text3);
+            margin: 0
+        }
+
+        .section-head {
+            text-align: center;
+            margin-bottom: 48px
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 4px 14px;
+            background: rgba(14, 165, 233, .08);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: .7rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px
+        }
+
+        .section-head h2 {
+            font-size: 2.2rem;
+            font-weight: 800
+        }
+
+        .destinations {
+            padding: 80px 24px;
+            background: var(--bg2)
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px
+        }
+
+        .dest-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            transition: .3s
+        }
+
+        .dest-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(14, 165, 233, .3);
+            box-shadow: 0 12px 40px rgba(14, 165, 233, .08)
+        }
+
+        .dest-icon {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, rgba(14, 165, 233, .12), rgba(249, 115, 22, .08));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 16px
+        }
+
+        .dest-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px
+        }
+
+        .dest-card p {
+            font-size: .85rem;
+            color: var(--text3);
+            line-height: 1.6
+        }
+
+        .dest-meta {
+            display: flex;
+            gap: 16px;
+            margin-top: 14px;
+            font-size: .75rem;
+            color: var(--text2)
+        }
+
+        .packages {
+            padding: 80px 24px
+        }
+
+        .package-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px
+        }
+
+        .package {
+            text-align: center;
+            padding: 32px 28px;
+            background: var(--card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: .3s
+        }
+
+        .package:hover {
+            transform: translateY(-4px);
+            border-color: rgba(14, 165, 233, .25)
+        }
+
+        .package-emoji {
+            font-size: 2.5rem;
+            margin-bottom: 14px
+        }
+
+        .package h4 {
+            font-weight: 700;
+            margin-bottom: 4px;
+            font-size: 1.15rem
+        }
+
+        .package .price {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--primary-light);
+            margin: 8px 0 12px
+        }
+
+        .package p {
+            font-size: .82rem;
+            color: var(--text3);
+            line-height: 1.7
+        }
+
+        .footer {
+            text-align: center;
+            padding: 32px;
+            font-size: .78rem;
+            color: var(--text3);
+            border-top: 1px solid var(--border)
+        }
+
+        .footer a {
+            color: var(--primary-light)
+        }
+
+        /* Chatbot */
+        #chatbotToggle {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px rgba(14, 165, 233, .3);
+            z-index: 9999;
+            color: white;
+            animation: bounce 2s ease infinite
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) }
+            50% { transform: translateY(-6px) }
+        }
+
+        #chatbotWindow {
+            position: fixed;
+            bottom: 96px;
+            right: 24px;
+            width: 380px;
+            height: 520px;
+            background: var(--bg);
+            border-radius: 20px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, .6);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 9999;
+            border: 1px solid var(--border)
+        }
+
+        #chatbotWindow.open {
+            display: flex;
+            animation: slideUp .3s ease
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(16px) }
+            to { opacity: 1; transform: translateY(0) }
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative
+        }
+
+        .chat-header-av {
+            width: 38px;
+            height: 38px;
+            background: rgba(255, 255, 255, .2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem
+        }
+
+        .chat-header h4 {
+            color: white;
+            font-size: .92rem;
+            font-weight: 700
+        }
+
+        .chat-header span {
+            color: rgba(255, 255, 255, .8);
+            font-size: .72rem
+        }
+
+        .chat-close {
+            position: absolute;
+            right: 14px;
+            top: 12px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, .7);
+            font-size: 1.4rem;
+            cursor: pointer
+        }
+
+        .chat-msgs {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .msg {
+            display: flex;
+            gap: 8px;
+            max-width: 88%;
+            animation: fadeIn .3s ease
+        }
+
+        .msg.bot { align-self: flex-start }
+        .msg.user { align-self: flex-end; flex-direction: row-reverse }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px) }
+            to { opacity: 1; transform: translateY(0) }
+        }
+
+        .msg-av {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .8rem;
+            flex-shrink: 0
+        }
+
+        .msg.bot .msg-av { background: rgba(14, 165, 233, .15) }
+        .msg.user .msg-av { background: rgba(249, 115, 22, .15) }
+
+        .msg-bubble {
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-size: .82rem;
+            line-height: 1.6;
+            color: var(--text)
+        }
+
+        .msg.bot .msg-bubble {
+            background: var(--card);
+            border-bottom-left-radius: 4px
+        }
+
+        .msg.user .msg-bubble {
+            background: var(--primary);
+            border-bottom-right-radius: 4px
+        }
+
+        .typing {
+            display: flex;
+            gap: 4px;
+            padding: 4px 0
+        }
+
+        .typing span {
+            width: 5px;
+            height: 5px;
+            background: var(--text3);
+            border-radius: 50%;
+            animation: dot 1.4s ease infinite;
+            display: inline-block
+        }
+
+        .typing span:nth-child(2) { animation-delay: .2s }
+        .typing span:nth-child(3) { animation-delay: .4s }
+
+        @keyframes dot {
+            0%, 80%, 100% { transform: scale(.6); opacity: .4 }
+            40% { transform: scale(1); opacity: 1 }
+        }
+
+        .suggestions {
+            padding: 8px 14px;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap
+        }
+
+        .chip {
+            padding: 6px 12px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: rgba(14, 165, 233, .06);
+            color: var(--primary-light);
+            font-size: .72rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: .2s
+        }
+
+        .chip:hover { background: rgba(14, 165, 233, .15) }
+
+        .chat-input {
+            padding: 10px 14px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 8px
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            font-size: .82rem;
+            font-family: inherit;
+            outline: none
+        }
+
+        .chat-input input:focus { border-color: var(--primary) }
+
+        .chat-input button {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: .9rem
+        }
+
+        @media(max-width:768px) {
+            .nav-links { display: none }
+            .hero h1 { font-size: 2rem }
+            #chatbotWindow { width: calc(100% - 16px); right: 8px; bottom: 80px; height: 480px }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav">
+        <a href="#" class="nav-brand">
+            <div class="icon">✈️</div><span>Wanderlust Travel</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#destinations">Destinations</a></li>
+            <li><a href="#packages">Packages</a></li>
+            <li><a href="#" class="nav-cta">Book Now</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-glow"></div>
+        <div style="position:relative;z-index:2;max-width:700px">
+            <div class="hero-badge">✈️ Award-Winning Travel Agency — 4.9★ on TrustPilot</div>
+            <h1>Discover the World, Your Way</h1>
+            <p>Custom-crafted travel experiences with AI-powered planning. From tropical escapes to cultural adventures, we handle every detail.</p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <h3>50,000+</h3>
+                    <p>Happy Travelers</p>
+                </div>
+                <div class="hero-stat">
+                    <h3>120+</h3>
+                    <p>Destinations</p>
+                </div>
+                <div class="hero-stat">
+                    <h3>4.9★</h3>
+                    <p>Average Rating</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="destinations" id="destinations">
+        <div class="container">
+            <div class="section-head">
+                <span class="section-tag">Trending</span>
+                <h2>Popular Destinations</h2>
+            </div>
+            <div class="grid">
+                <div class="dest-card">
+                    <div class="dest-icon">🏝️</div>
+                    <h3>Maldives</h3>
+                    <p>Crystal-clear waters, overwater bungalows, and world-class snorkeling in paradise.</p>
+                    <div class="dest-meta">
+                        <span>✈️ 7 nights</span>
+                        <span>💰 From $2,499</span>
+                        <span>🔥 Trending</span>
+                    </div>
+                </div>
+                <div class="dest-card">
+                    <div class="dest-icon">🗼</div>
+                    <h3>Paris, France</h3>
+                    <p>Romance, art, gastronomy — the City of Light awaits with timeless elegance.</p>
+                    <div class="dest-meta">
+                        <span>✈️ 5 nights</span>
+                        <span>💰 From $1,899</span>
+                        <span>⭐ Classic</span>
+                    </div>
+                </div>
+                <div class="dest-card">
+                    <div class="dest-icon">🗻</div>
+                    <h3>Tokyo, Japan</h3>
+                    <p>Where ancient tradition meets futuristic innovation — temples, tech, and incredible food.</p>
+                    <div class="dest-meta">
+                        <span>✈️ 8 nights</span>
+                        <span>💰 From $2,199</span>
+                        <span>🌸 Best Seller</span>
+                    </div>
+                </div>
+                <div class="dest-card">
+                    <div class="dest-icon">🦁</div>
+                    <h3>Safari, Kenya</h3>
+                    <p>Witness the Big Five on a once-in-a-lifetime African safari adventure.</p>
+                    <div class="dest-meta">
+                        <span>✈️ 6 nights</span>
+                        <span>💰 From $3,299</span>
+                        <span>🌍 Adventure</span>
+                    </div>
+                </div>
+                <div class="dest-card">
+                    <div class="dest-icon">🏖️</div>
+                    <h3>Bali, Indonesia</h3>
+                    <p>Lush rice terraces, spiritual temples, vibrant nightlife, and surf-ready beaches.</p>
+                    <div class="dest-meta">
+                        <span>✈️ 10 nights</span>
+                        <span>💰 From $1,599</span>
+                        <span>🧘 Wellness</span>
+                    </div>
+                </div>
+                <div class="dest-card">
+                    <div class="dest-icon">🏔️</div>
+                    <h3>Swiss Alps</h3>
+                    <p>Breathtaking mountain views, luxury chalets, skiing, and scenic train journeys.</p>
+                    <div class="dest-meta">
+                        <span>✈️ 7 nights</span>
+                        <span>💰 From $2,899</span>
+                        <span>❄️ Premium</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="packages" id="packages">
+        <div class="container">
+            <div class="section-head">
+                <span class="section-tag">Packages</span>
+                <h2>Travel Your Way</h2>
+            </div>
+            <div class="package-grid">
+                <div class="package">
+                    <div class="package-emoji">🎒</div>
+                    <h4>Explorer</h4>
+                    <div class="price">From $999</div>
+                    <p>Flights + hotel + airport transfers. Perfect for independent travelers who love to explore on their own terms.</p>
+                </div>
+                <div class="package">
+                    <div class="package-emoji">🌟</div>
+                    <h4>Premium</h4>
+                    <div class="price">From $2,499</div>
+                    <p>All-inclusive with guided tours, meals, activities, and a dedicated travel concierge for a worry-free vacation.</p>
+                </div>
+                <div class="package">
+                    <div class="package-emoji">👑</div>
+                    <h4>Luxury</h4>
+                    <div class="price">From $5,999</div>
+                    <p>5-star resorts, private transfers, exclusive experiences, personal chef, and VIP access everywhere you go.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>AI Chatbot Demo — Built by <a href="https://bouazzi1.github.io/ai-portfolio/">AI Automation Studio</a></p>
+    </footer>
+
+    <button id="chatbotToggle">💬</button>
+    <div id="chatbotWindow">
+        <div class="chat-header">
+            <div class="chat-header-av">✈️</div>
+            <div>
+                <h4>Wanderlust AI Concierge</h4><span>● Online — Let's plan your trip</span>
+            </div>
+            <button class="chat-close" id="chatClose">×</button>
+        </div>
+        <div class="chat-msgs" id="chatMsgs"></div>
+        <div class="suggestions" id="chatSuggestions">
+            <button class="chip" data-msg="What destinations do you recommend?">🌍 Destinations</button>
+            <button class="chip" data-msg="Tell me about your travel packages">📦 Packages</button>
+            <button class="chip" data-msg="I want to plan a honeymoon">💕 Honeymoon</button>
+            <button class="chip" data-msg="What's the best time to visit Bali?">🏝️ Best Time</button>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Where would you like to go?">
+            <button id="chatSend">➤</button>
+        </div>
+    </div>
+
+    <script>
+        const KB = [
+            { p: ["hello", "hi", "hey", "good morning", "bonjour"], r: "Welcome to **Wanderlust Travel**! ✈️ I'm your AI travel concierge. I can help you with:\n\n• 🌍 **Destination** recommendations\n• 📦 **Package** options & pricing\n• 💕 **Honeymoon** & special trips\n• 📅 **Best time** to visit\n• 📋 **Visa** & travel info\n• 💰 **Budget** planning\n\nWhere would you like to go? 🗺️" },
+            { p: ["destination", "where", "recommend", "suggest", "popular", "trending"], r: "🌍 **Trending Destinations:**\n\n• 🏝️ **Maldives** — From $2,499 (7 nights) — Paradise overwater villas\n• 🗼 **Paris** — From $1,899 (5 nights) — Romance & culture\n• 🗻 **Tokyo** — From $2,199 (8 nights) — Tradition meets future\n• 🦁 **Kenya Safari** — From $3,299 (6 nights) — Big Five adventure\n• 🏖️ **Bali** — From $1,599 (10 nights) — Wellness & beaches\n• 🏔️ **Swiss Alps** — From $2,899 (7 nights) — Mountain luxury\n\nAll prices per person, flights included. 💫\n\nWhich destination interests you?" },
+            { p: ["package", "plan", "include", "offer", "type", "option"], r: "📦 **Our Travel Packages:**\n\n🎒 **Explorer — From $999**\n• Flights + hotel + airport transfers\n• Perfect for independent travelers\n• Flexible itinerary\n\n🌟 **Premium — From $2,499**\n• All-inclusive with guided tours\n• Meals + activities included\n• Dedicated travel concierge\n\n👑 **Luxury — From $5,999**\n• 5-star resorts, private transfers\n• Exclusive experiences & VIP access\n• Personal chef & butler service\n\n💳 Payment plans available (0% interest)!\n\nWhich package level suits you?" },
+            { p: ["honeymoon", "romantic", "couple", "anniversary", "wedding", "love"], r: "💕 **Honeymoon & Romance Packages:**\n\n🥂 **Maldives Romance** — $3,999/couple\n• Overwater villa, couples spa, sunset cruise, candlelit dinner\n\n🗼 **Paris Love Story** — $3,499/couple\n• Boutique hotel, Seine river cruise, wine tasting, Eiffel Tower dinner\n\n🏖️ **Bali Bliss** — $2,899/couple\n• Private pool villa, couples yoga, temple tour, beach dinner\n\n🏔️ **Swiss Escape** — $4,499/couple\n• Chalet suite, fondue experience, scenic train, hot springs\n\nAll include: champagne, flowers, late checkout, anniversary surprise 🌹\n\nWhen's the special occasion?" },
+            { p: ["maldive"], r: "🏝️ **Maldives — Paradise Found:**\n\n**Packages:**\n• 🎒 Explorer (7 nights): $2,499/person\n• 🌟 Premium (7 nights): $3,999/person\n• 👑 Luxury (7 nights): $6,999/person\n\n**Highlights:**\n• Overwater bungalow with glass floor\n• Snorkeling & diving with manta rays\n• Underwater restaurant dining\n• Sunset dolphin cruise\n• Private island picnic\n\n**Best time to visit:** November – April (dry season)\n**Visa:** Free 30-day visa on arrival\n**Flight time:** ~10-14 hours from US\n\nShall I create a custom Maldives itinerary?" },
+            { p: ["paris", "france", "europe"], r: "🗼 **Paris, France — City of Light:**\n\n**Packages:**\n• 🎒 Explorer (5 nights): $1,899/person\n• 🌟 Premium (5 nights): $3,299/person\n• 👑 Luxury (5 nights): $5,499/person\n\n**Highlights:**\n• Eiffel Tower skip-the-line access\n• Louvre Museum private guided tour\n• Seine River dinner cruise\n• Versailles day trip\n• French cooking class\n• Montmartre & wine tasting\n\n**Best time:** April – June, September – October\n**Visa:** Schengen visa (if required)\n\nParis is always a good idea! ❤️" },
+            { p: ["tokyo", "japan"], r: "🗻 **Tokyo, Japan — East Meets Future:**\n\n**Packages:**\n• 🎒 Explorer (8 nights): $2,199/person\n• 🌟 Premium (8 nights): $3,699/person\n• 👑 Luxury (8 nights): $6,499/person\n\n**Highlights:**\n• Shibuya crossing & Harajuku\n• Traditional tea ceremony\n• Mount Fuji day trip\n• Tsukiji fish market tour\n• Bullet train to Kyoto (add-on)\n• Robot Restaurant show\n• Sumo wrestling experience\n\n**Best time:** March – May (cherry blossom), October – November (autumn)\n**Visa:** Visa-free for 68 countries\n\nReady to explore Japan? 🌸" },
+            { p: ["bali", "indonesia"], r: "🏖️ **Bali, Indonesia — Island of the Gods:**\n\n**Packages:**\n• 🎒 Explorer (10 nights): $1,599/person\n• 🌟 Premium (10 nights): $2,799/person\n• 👑 Luxury (10 nights): $4,999/person\n\n**Highlights:**\n• Ubud rice terraces & monkey forest\n• Uluwatu Temple sunset\n• Surfing lessons in Canggu\n• Balinese cooking class\n• Nusa Penida island day trip\n• Spa & wellness retreats\n\n**Best time:** April – October (dry season)\n**Visa:** Free 30-day visa on arrival\n**Budget tip:** Bali is incredibly affordable!\n\nBali is perfect for any traveler! 🧘" },
+            { p: ["safari", "kenya", "africa"], r: "🦁 **Kenya Safari — Wild Africa:**\n\n**Packages:**\n• 🎒 Explorer (6 nights): $3,299/person\n• 🌟 Premium (6 nights): $4,899/person\n• 👑 Luxury (6 nights): $8,999/person\n\n**Highlights:**\n• Masai Mara game drives (Big Five)\n• Hot air balloon over the savanna\n• Amboseli with Kilimanjaro views\n• Lake Nakuru flamingo spectacle\n• Maasai village cultural visit\n• Bush dinner under the stars\n\n**Best time:** July – October (Great Migration)\n**Visa:** e-Visa required ($51)\n\nThe trip of a lifetime! 🌍" },
+            { p: ["budget", "cheap", "afford", "save", "money", "cost"], r: "💰 **Budget-Friendly Travel Tips:**\n\n🎯 **Best Value Destinations:**\n• 🏖️ Bali — From $1,599 (10 nights!)\n• 🏝️ Thailand — From $1,299 (8 nights)\n• 🇲🇽 Mexico — From $899 (7 nights)\n• 🇵🇹 Portugal — From $1,499 (6 nights)\n\n💡 **Money-Saving Tips:**\n• Book 3-6 months in advance (save 20-30%)\n• Travel off-peak season\n• Choose our Explorer package\n• Group bookings get 15% discount\n\n💳 **Payment Plans:** Split into 3-6 monthly payments (0% interest)\n\nWhat's your ideal budget per person?" },
+            { p: ["visa", "passport", "document", "require", "need"], r: "📋 **Travel Documents & Visas:**\n\n**General requirements:**\n• Valid passport (6+ months validity)\n• Return/onward flight booking\n• Travel insurance (strongly recommended)\n\n**Visa-free for US/EU citizens:**\n• 🏖️ Bali — 30 days free\n• 🏝️ Maldives — 30 days free\n• 🗻 Japan — 90 days free\n• 🗼 France — 90 days (Schengen)\n• 🏔️ Switzerland — 90 days (Schengen)\n\n**Visa required:**\n• 🦁 Kenya — e-Visa ($51)\n\n📌 We handle all visa applications for Premium & Luxury packages!\n\nNeed visa help for a specific destination?" },
+            { p: ["when", "best time", "season", "weather", "month"], r: "📅 **Best Times to Visit:**\n\n• 🏝️ **Maldives** — Nov–Apr (dry, sunny)\n• 🗼 **Paris** — Apr–Jun, Sep–Oct (mild, fewer crowds)\n• 🗻 **Tokyo** — Mar–May (cherry blossom), Oct–Nov (autumn)\n• 🦁 **Kenya** — Jul–Oct (Great Migration)\n• 🏖️ **Bali** — Apr–Oct (dry season)\n• 🏔️ **Swiss Alps** — Dec–Mar (ski), Jun–Sep (hiking)\n\n💡 **Pro tip:** Shoulder season = best prices + good weather!\n\nWhere are you thinking of going?" },
+            { p: ["family", "kid", "children", "child"], r: "👨‍👩‍👧‍👦 **Family-Friendly Trips:**\n\n🏖️ **Bali Family Adventure** — From $1,299/person\n• Kid-friendly resorts, water parks, animal sanctuaries\n\n🗻 **Tokyo Family Fun** — From $1,899/person\n• Disneyland, Teamlab, Pokémon Center, Akihabara\n\n🗼 **Paris for Families** — From $1,599/person\n• Disneyland Paris, boat tours, crêpe-making class\n\n🦁 **Kenya Family Safari** — From $2,799/person\n• Child-safe lodges, educational rangers, gentle game drives\n\n👶 **Kids under 5:** 50% off on most packages\n👧 **Kids 5-12:** 25% off on most packages\n\nHow many in the family?" },
+            { p: ["cancel", "refund", "change", "reschedule", "policy"], r: "📝 **Booking Policies:**\n\n• **Free cancellation:** Up to 60 days before departure\n• **50% refund:** 30-59 days before departure\n• **25% refund:** 15-29 days before departure\n• **No refund:** Less than 15 days\n\n✅ **Travel insurance** (included in Premium & Luxury) covers:\n• Medical emergencies\n• Trip cancellation for any reason\n• Lost luggage\n• Flight delays\n\n🔄 **Rescheduling:** Free date changes up to 30 days before departure\n\nNeed to make a change?" },
+            { p: ["thank", "thanks", "great", "perfect", "awesome"], r: "You're welcome! ✈️ Safe travels ahead! Remember:\n\n📞 **Call:** (555) 321-TRIP\n📧 **Email:** hello@wanderlust-travel.com\n🌐 **Website:** wanderlust-travel.com\n\nThe world is waiting — let's make it happen! 🌍" }
+        ];
+        const FALLBACK = "I'd love to help you plan your dream trip! ✈️ I can help with:\n\n• 🌍 **Destinations** & recommendations\n• 📦 **Packages** & pricing\n• 💕 **Honeymoon** & special trips\n• 📅 **Best time** to visit\n• 💰 **Budget** tips\n• 📋 **Visa** info\n\nWhere would you like to explore? 🗺️";
+        const msgs = document.getElementById('chatMsgs'), inp = document.getElementById('chatInput'), tog = document.getElementById('chatbotToggle'), win = document.getElementById('chatbotWindow');
+        function addMsg(t, s) { const d = document.createElement('div'); d.className = `msg ${s}`; d.innerHTML = `<div class="msg-av">${s === 'bot' ? '✈️' : '👤'}</div><div class="msg-bubble">${t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n\n/g, '</p><p>').replace(/\n• /g, '<br>• ').replace(/\n/g, '<br>').replace(/^/, '<p>').replace(/$/, '</p>')}</div>`; msgs.appendChild(d); msgs.scrollTop = 9999 }
+        function getResp(m) { const l = m.toLowerCase(); for (const e of KB) { for (const p of e.p) if (l.includes(p)) return e.r } return FALLBACK }
+        addMsg("Hello! ✈️ I'm the Wanderlust Travel Concierge. I can help you discover amazing destinations, find the perfect package, and plan your dream vacation.\n\nWhere would you like to go? 🌍", 'bot');
+        let open = false;
+        tog.onclick = () => { open = true; win.classList.add('open'); tog.style.display = 'none'; inp.focus() };
+        document.getElementById('chatClose').onclick = () => { open = false; win.classList.remove('open'); tog.style.display = 'flex' };
+        function send() { const t = inp.value.trim(); if (!t) return; addMsg(t, 'user'); inp.value = ''; document.getElementById('chatSuggestions').style.display = 'none'; const ty = document.createElement('div'); ty.className = 'msg bot'; ty.id = 'typ'; ty.innerHTML = '<div class="msg-av">✈️</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>'; msgs.appendChild(ty); msgs.scrollTop = 9999; setTimeout(() => { document.getElementById('typ')?.remove(); addMsg(getResp(t), 'bot') }, 400 + Math.random() * 600) }
+        document.getElementById('chatSend').onclick = send;
+        inp.onkeypress = e => { if (e.key === 'Enter') send() };
+        document.querySelectorAll('.chip').forEach(c => c.onclick = () => { inp.value = c.dataset.msg; send() });
+    </script>
+</body>
+
+</html>

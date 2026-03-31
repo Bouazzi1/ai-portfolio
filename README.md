@@ -24,7 +24,10 @@ ai-portfolio/
 │   ├── healthcare-bot/       ← MedCare Clinic – AI Appointment Assistant
 │   ├── realestate-bot/       ← LuxeHomes Realty – AI Property Assistant
 │   ├── saas-bot/             ← CloudSync – AI Onboarding Assistant
-│   └── education-bot/        ← SkillForge Academy – AI Course Assistant
+│   ├── education-bot/        ← SkillForge Academy – AI Course Assistant
+│   ├── fitness-bot/          ← FitCore Studio – AI Fitness Assistant
+│   ├── legal-bot/            ← JusticeAI Legal – AI Legal Assistant
+│   └── travel-bot/           ← Wanderlust Travel – AI Travel Concierge
 └── templates/
     ├── chatbot-template/     ← Standard chatbot template (pattern-matching)
     ├── ai-chatbot-template/  ← AI-powered chatbot template (Gemini/GPT-4/Groq)
@@ -45,6 +48,9 @@ Each demo in `demos/` is a standalone HTML page with an embedded AI chatbot widg
 | `realestate-bot` | Real Estate | Property search assistance and listing enquiries |
 | `saas-bot` | SaaS / Tech | User onboarding, feature walkthroughs, and support |
 | `education-bot` | Education | Course guidance and learning assistant |
+| `fitness-bot` | Fitness & Gym | Class booking, membership plans, personal training, and nutrition |
+| `legal-bot` | Legal / Law | Client intake, consultation booking, practice areas, and fee estimates |
+| `travel-bot` | Travel Agency | Destination recommendations, trip packages, honeymoon planning, and visa info |
 
 ---
 

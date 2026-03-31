@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JusticeAI Legal — AI Legal Assistant Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366F1;
+            --primary-light: #818CF8;
+            --primary-dark: #4F46E5;
+            --accent: #14B8A6;
+            --bg: #06060E;
+            --bg2: #0A0A16;
+            --card: #12122A;
+            --text: #EEF2FF;
+            --text2: #A5B4FC;
+            --text3: #6B6B8A;
+            --border: rgba(99, 102, 241, 0.12);
+            --font: 'Inter', sans-serif
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(6, 6, 14, .85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border)
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 1.15rem
+        }
+
+        .nav-brand .icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 28px;
+            align-items: center
+        }
+
+        .nav-links a {
+            font-size: .85rem;
+            color: var(--text3);
+            font-weight: 500;
+            transition: .2s
+        }
+
+        .nav-links a:hover {
+            color: var(--text)
+        }
+
+        .nav-cta {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 100px;
+            color: white !important;
+            font-weight: 600;
+            font-size: .82rem !important
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 24px 80px;
+            position: relative
+        }
+
+        .hero-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, .08), transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%)
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            background: rgba(99, 102, 241, .08);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: .75rem;
+            font-weight: 600;
+            color: var(--primary-light);
+            margin-bottom: 24px
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5.5vw, 4.2rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff, var(--text2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text3);
+            max-width: 520px;
+            margin: 0 auto 32px
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            flex-wrap: wrap
+        }
+
+        .hero-stat h3 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-light)
+        }
+
+        .hero-stat p {
+            font-size: .78rem;
+            color: var(--text3);
+            margin: 0
+        }
+
+        .section-head {
+            text-align: center;
+            margin-bottom: 48px
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 4px 14px;
+            background: rgba(99, 102, 241, .08);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: .7rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px
+        }
+
+        .section-head h2 {
+            font-size: 2.2rem;
+            font-weight: 800
+        }
+
+        .practices {
+            padding: 80px 24px;
+            background: var(--bg2)
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px
+        }
+
+        .practice-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            transition: .3s
+        }
+
+        .practice-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(99, 102, 241, .3);
+            box-shadow: 0 12px 40px rgba(99, 102, 241, .08)
+        }
+
+        .practice-icon {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, .12), rgba(20, 184, 166, .08));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 16px
+        }
+
+        .practice-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px
+        }
+
+        .practice-card p {
+            font-size: .85rem;
+            color: var(--text3);
+            line-height: 1.6
+        }
+
+        .attorneys {
+            padding: 80px 24px
+        }
+
+        .attorney-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px
+        }
+
+        .attorney {
+            text-align: center;
+            padding: 28px;
+            background: var(--card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: .3s
+        }
+
+        .attorney:hover {
+            transform: translateY(-4px);
+            border-color: rgba(99, 102, 241, .25)
+        }
+
+        .attorney-avatar {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 14px
+        }
+
+        .attorney h4 {
+            font-weight: 700;
+            margin-bottom: 4px
+        }
+
+        .attorney p {
+            font-size: .82rem;
+            color: var(--text3)
+        }
+
+        .footer {
+            text-align: center;
+            padding: 32px;
+            font-size: .78rem;
+            color: var(--text3);
+            border-top: 1px solid var(--border)
+        }
+
+        .footer a {
+            color: var(--primary-light)
+        }
+
+        /* Chatbot */
+        #chatbotToggle {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px rgba(99, 102, 241, .3);
+            z-index: 9999;
+            color: white;
+            animation: bounce 2s ease infinite
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) }
+            50% { transform: translateY(-6px) }
+        }
+
+        #chatbotWindow {
+            position: fixed;
+            bottom: 96px;
+            right: 24px;
+            width: 380px;
+            height: 520px;
+            background: var(--bg);
+            border-radius: 20px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, .6);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 9999;
+            border: 1px solid var(--border)
+        }
+
+        #chatbotWindow.open {
+            display: flex;
+            animation: slideUp .3s ease
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(16px) }
+            to { opacity: 1; transform: translateY(0) }
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative
+        }
+
+        .chat-header-av {
+            width: 38px;
+            height: 38px;
+            background: rgba(255, 255, 255, .2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem
+        }
+
+        .chat-header h4 {
+            color: white;
+            font-size: .92rem;
+            font-weight: 700
+        }
+
+        .chat-header span {
+            color: rgba(255, 255, 255, .8);
+            font-size: .72rem
+        }
+
+        .chat-close {
+            position: absolute;
+            right: 14px;
+            top: 12px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, .7);
+            font-size: 1.4rem;
+            cursor: pointer
+        }
+
+        .chat-msgs {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .msg {
+            display: flex;
+            gap: 8px;
+            max-width: 88%;
+            animation: fadeIn .3s ease
+        }
+
+        .msg.bot { align-self: flex-start }
+        .msg.user { align-self: flex-end; flex-direction: row-reverse }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px) }
+            to { opacity: 1; transform: translateY(0) }
+        }
+
+        .msg-av {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .8rem;
+            flex-shrink: 0
+        }
+
+        .msg.bot .msg-av { background: rgba(99, 102, 241, .15) }
+        .msg.user .msg-av { background: rgba(20, 184, 166, .15) }
+
+        .msg-bubble {
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-size: .82rem;
+            line-height: 1.6;
+            color: var(--text)
+        }
+
+        .msg.bot .msg-bubble {
+            background: var(--card);
+            border-bottom-left-radius: 4px
+        }
+
+        .msg.user .msg-bubble {
+            background: var(--primary);
+            border-bottom-right-radius: 4px
+        }
+
+        .typing {
+            display: flex;
+            gap: 4px;
+            padding: 4px 0
+        }
+
+        .typing span {
+            width: 5px;
+            height: 5px;
+            background: var(--text3);
+            border-radius: 50%;
+            animation: dot 1.4s ease infinite;
+            display: inline-block
+        }
+
+        .typing span:nth-child(2) { animation-delay: .2s }
+        .typing span:nth-child(3) { animation-delay: .4s }
+
+        @keyframes dot {
+            0%, 80%, 100% { transform: scale(.6); opacity: .4 }
+            40% { transform: scale(1); opacity: 1 }
+        }
+
+        .suggestions {
+            padding: 8px 14px;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap
+        }
+
+        .chip {
+            padding: 6px 12px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: rgba(99, 102, 241, .06);
+            color: var(--primary-light);
+            font-size: .72rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: .2s
+        }
+
+        .chip:hover { background: rgba(99, 102, 241, .15) }
+
+        .chat-input {
+            padding: 10px 14px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 8px
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            font-size: .82rem;
+            font-family: inherit;
+            outline: none
+        }
+
+        .chat-input input:focus { border-color: var(--primary) }
+
+        .chat-input button {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: .9rem
+        }
+
+        @media(max-width:768px) {
+            .nav-links { display: none }
+            .hero h1 { font-size: 2rem }
+            #chatbotWindow { width: calc(100% - 16px); right: 8px; bottom: 80px; height: 480px }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav">
+        <a href="#" class="nav-brand">
+            <div class="icon">⚖️</div><span>JusticeAI Legal</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#practices">Practice Areas</a></li>
+            <li><a href="#attorneys">Attorneys</a></li>
+            <li><a href="#" class="nav-cta">Free Consultation</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-glow"></div>
+        <div style="position:relative;z-index:2;max-width:700px">
+            <div class="hero-badge">⚖️ Trusted Legal Representation Since 2005</div>
+            <h1>Justice, Powered by Intelligence</h1>
+            <p>Award-winning attorneys leveraging AI to provide faster, smarter, and more affordable legal solutions for individuals and businesses.</p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <h3>5,000+</h3>
+                    <p>Cases Won</p>
+                </div>
+                <div class="hero-stat">
+                    <h3>98%</h3>
+                    <p>Success Rate</p>
+                </div>
+                <div class="hero-stat">
+                    <h3>20+</h3>
+                    <p>Years Experience</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="practices" id="practices">
+        <div class="container">
+            <div class="section-head">
+                <span class="section-tag">Practice Areas</span>
+                <h2>Legal Expertise</h2>
+            </div>
+            <div class="grid">
+                <div class="practice-card">
+                    <div class="practice-icon">🏢</div>
+                    <h3>Business Law</h3>
+                    <p>Formation, contracts, mergers, disputes, and compliance for startups and enterprises.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-icon">👨‍👩‍👧</div>
+                    <h3>Family Law</h3>
+                    <p>Divorce, custody, child support, prenuptial agreements, and adoption proceedings.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-icon">🏠</div>
+                    <h3>Real Estate Law</h3>
+                    <p>Property transactions, lease disputes, zoning, title issues, and landlord-tenant matters.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-icon">⚡</div>
+                    <h3>Personal Injury</h3>
+                    <p>Auto accidents, workplace injuries, medical malpractice, and wrongful death claims.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-icon">💼</div>
+                    <h3>Employment Law</h3>
+                    <p>Wrongful termination, discrimination, harassment, wage disputes, and contract negotiation.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-icon">📋</div>
+                    <h3>Estate Planning</h3>
+                    <p>Wills, trusts, probate, power of attorney, and asset protection strategies.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="attorneys" id="attorneys">
+        <div class="container">
+            <div class="section-head">
+                <span class="section-tag">Team</span>
+                <h2>Our Attorneys</h2>
+            </div>
+            <div class="attorney-grid">
+                <div class="attorney">
+                    <div class="attorney-avatar">👨‍💼</div>
+                    <h4>Robert Sterling</h4>
+                    <p>Managing Partner — Business Law</p>
+                </div>
+                <div class="attorney">
+                    <div class="attorney-avatar">👩‍💼</div>
+                    <h4>Elena Vasquez</h4>
+                    <p>Senior Partner — Family Law</p>
+                </div>
+                <div class="attorney">
+                    <div class="attorney-avatar">👨‍💼</div>
+                    <h4>Michael Chen</h4>
+                    <p>Partner — Personal Injury</p>
+                </div>
+                <div class="attorney">
+                    <div class="attorney-avatar">👩‍💼</div>
+                    <h4>Sarah Okonkwo</h4>
+                    <p>Associate — Employment Law</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>AI Chatbot Demo — Built by <a href="https://bouazzi1.github.io/ai-portfolio/">AI Automation Studio</a></p>
+    </footer>
+
+    <button id="chatbotToggle">💬</button>
+    <div id="chatbotWindow">
+        <div class="chat-header">
+            <div class="chat-header-av">⚖️</div>
+            <div>
+                <h4>JusticeAI Legal Assistant</h4><span>● Online — Confidential & secure</span>
+            </div>
+            <button class="chat-close" id="chatClose">×</button>
+        </div>
+        <div class="chat-msgs" id="chatMsgs"></div>
+        <div class="suggestions" id="chatSuggestions">
+            <button class="chip" data-msg="I need a consultation">📞 Free Consultation</button>
+            <button class="chip" data-msg="What practice areas do you cover?">⚖️ Practice Areas</button>
+            <button class="chip" data-msg="How much do you charge?">💰 Fees & Pricing</button>
+            <button class="chip" data-msg="I have a business legal question">🏢 Business Law</button>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Describe your legal situation...">
+            <button id="chatSend">➤</button>
+        </div>
+    </div>
+
+    <script>
+        const KB = [
+            { p: ["hello", "hi", "hey", "good morning", "good afternoon"], r: "Welcome to **JusticeAI Legal**. ⚖️ I'm your confidential AI legal assistant. I can help you with:\n\n• 📞 Schedule a **free consultation**\n• ⚖️ Learn about our **practice areas**\n• 👨‍💼 Meet our **attorneys**\n• 💰 Understand our **fees**\n• 📋 Get answers to **legal questions**\n\nAll conversations are confidential. How can I assist you?" },
+            { p: ["consult", "appointment", "meet", "speak", "talk", "call", "schedule"], r: "📞 **Free Initial Consultation:**\n\nWe offer a **complimentary 30-minute consultation** for new clients:\n\n1️⃣ **In-Person** — Visit our downtown office\n2️⃣ **Video Call** — Zoom or Google Meet\n3️⃣ **Phone** — Call (555) 456-7890\n\n**Available slots:**\n• Mon–Fri: 9:00 AM – 6:00 PM\n• Saturday: 10:00 AM – 2:00 PM\n\n📋 What to prepare:\n• Summary of your situation\n• Relevant documents\n• Questions you want answered\n\nWhich practice area is your matter related to?" },
+            { p: ["practice", "area", "speciali", "type", "what do you", "cover", "handle"], r: "⚖️ **Our Practice Areas:**\n\n• 🏢 **Business Law** — Contracts, formation, disputes, M&A\n• 👨‍👩‍👧 **Family Law** — Divorce, custody, support, adoption\n• 🏠 **Real Estate** — Transactions, disputes, landlord-tenant\n• ⚡ **Personal Injury** — Accidents, malpractice, wrongful death\n• 💼 **Employment** — Termination, discrimination, wages\n• 📋 **Estate Planning** — Wills, trusts, probate\n\nEach area is led by a specialist attorney with 10+ years of experience.\n\nWhich area relates to your situation?" },
+            { p: ["fee", "cost", "price", "charge", "afford", "pay", "expensive", "how much"], r: "💰 **Our Fee Structure:**\n\n• 📞 **Initial consultation:** FREE (30 minutes)\n• ⏱️ **Hourly rate:** $150 – $350/hour (varies by complexity)\n• 📋 **Flat fee:** Available for standard matters\n  — Business formation: $500 – $1,500\n  — Simple will: $300 – $600\n  — Uncontested divorce: $800 – $2,000\n• ⚡ **Contingency:** Personal injury cases (no win, no fee)\n• 💳 **Payment plans:** Available for qualifying clients\n\nWe believe quality legal help should be accessible. Want a custom quote for your matter?" },
+            { p: ["business", "company", "startup", "llc", "corporation", "contract", "partnership", "incorporation"], r: "🏢 **Business Law Services:**\n\n• **Entity Formation** — LLC, Corp, Partnership ($500-$1,500)\n• **Contracts** — Drafting, review, negotiation\n• **Business Disputes** — Litigation, mediation, arbitration\n• **Mergers & Acquisitions** — Due diligence, deal structuring\n• **Compliance** — Regulatory, licensing, permits\n• **IP Protection** — Trademarks, copyrights, NDAs\n\n**Lead Attorney:** Robert Sterling (20+ yrs experience)\n\n📊 We've helped 800+ businesses from startup to exit.\n\nWant to schedule a business consultation?" },
+            { p: ["family", "divorce", "custody", "child support", "prenup", "adoption", "separation", "alimony"], r: "👨‍👩‍👧 **Family Law Services:**\n\n• **Divorce** — Contested & uncontested, mediation\n• **Child Custody** — Joint, sole, modification\n• **Child Support** — Calculation, enforcement, modification\n• **Prenuptial Agreements** — Drafting & review\n• **Adoption** — Domestic, stepparent, international\n• **Domestic Violence** — Restraining orders, protection\n\n**Lead Attorney:** Elena Vasquez (15+ yrs experience)\n\n💙 We handle every case with empathy and discretion.\n\nAll family law consultations are strictly confidential." },
+            { p: ["injury", "accident", "hurt", "crash", "slip", "fall", "malpractice", "wrongful death"], r: "⚡ **Personal Injury — No Win, No Fee:**\n\nWe handle:\n• 🚗 **Auto Accidents** — Car, truck, motorcycle\n• 🏢 **Workplace Injuries** — Construction, industrial\n• 🏥 **Medical Malpractice** — Misdiagnosis, surgical errors\n• 🚶 **Slip & Fall** — Property owner negligence\n• ⚰️ **Wrongful Death** — Negligence, liability\n\n**Lead Attorney:** Michael Chen (12+ yrs, $50M+ recovered)\n\n📊 **Average settlement:** $75,000 – $500,000+\n💰 **Fee:** Contingency only — you pay nothing unless we win\n\nTime limits apply! Contact us soon to protect your rights." },
+            { p: ["employ", "fired", "termination", "discriminat", "harass", "wage", "worker", "job", "boss"], r: "💼 **Employment Law Services:**\n\n• **Wrongful Termination** — Illegal firing, retaliation\n• **Discrimination** — Age, race, gender, disability\n• **Harassment** — Sexual harassment, hostile workplace\n• **Wage & Hour** — Unpaid overtime, minimum wage\n• **Contract Disputes** — Non-compete, severance\n• **Whistleblower Protection** — Retaliation defense\n\n**Lead Attorney:** Sarah Okonkwo (10+ yrs experience)\n\n⚠️ Statutes of limitation apply — don't delay!\n\nWould you like to discuss your workplace situation?" },
+            { p: ["estate", "will", "trust", "probate", "inherit", "power of attorney", "asset"], r: "📋 **Estate Planning Services:**\n\n• **Simple Will** — $300 – $600\n• **Living Trust** — $1,000 – $3,000\n• **Power of Attorney** — $150 – $300\n• **Healthcare Directive** — $100 – $200\n• **Probate Administration** — Hourly or flat fee\n• **Asset Protection** — Trusts, LLCs, insurance planning\n\n📦 **Complete Estate Package:** $1,500 – $4,000\n• Will + Trust + POA + Healthcare Directive + beneficiary review\n\n🔒 Protect your family's future. Book your consultation today." },
+            { p: ["real estate", "property", "landlord", "tenant", "lease", "evict", "title", "closing"], r: "🏠 **Real Estate Law Services:**\n\n• **Transactions** — Purchase, sale, closing assistance\n• **Lease Review** — Commercial & residential\n• **Disputes** — Landlord-tenant, boundary, easement\n• **Evictions** — Landlord representation & tenant defense\n• **Title Issues** — Searches, insurance, clearing defects\n• **Zoning** — Permits, variances, compliance\n\n📊 We've handled $200M+ in real estate transactions.\n\nBuying, selling, or dealing with a property issue?" },
+            { p: ["how long", "timeline", "duration", "time", "take"], r: "⏱️ **Typical Timelines:**\n\n• **Business Formation:** 1-2 weeks\n• **Contract Review:** 2-5 business days\n• **Uncontested Divorce:** 2-4 months\n• **Contested Divorce:** 6-18 months\n• **Personal Injury Settlement:** 3-12 months\n• **Personal Injury Trial:** 1-3 years\n• **Estate Planning:** 2-4 weeks\n• **Real Estate Closing:** 30-60 days\n\n⚠️ Every case is unique. Timelines may vary.\n\nWant a more specific estimate for your situation?" },
+            { p: ["document", "paperwork", "file", "bring", "need", "prepare"], r: "📋 **What to Bring to Your Consultation:**\n\n**General:**\n• Photo ID\n• Summary of your situation (written)\n• Timeline of events\n\n**For specific cases:**\n• 🏢 Business — Contracts, agreements, correspondence\n• 👨‍👩‍👧 Family — Marriage certificate, financial records\n• ⚡ Injury — Medical records, accident report, photos\n• 💼 Employment — Pay stubs, offer letter, emails\n• 📋 Estate — Asset list, existing will/trust\n\nDon't worry if you don't have everything — we'll guide you!" },
+            { p: ["thank", "thanks", "great", "perfect", "helpful"], r: "You're welcome! ⚖️ We're here to protect your rights and guide you through every step.\n\n📞 **Call:** (555) 456-7890\n📧 **Email:** intake@justiceai-legal.com\n🌐 **Website:** justiceai-legal.com\n\nRemember: your initial consultation is **free and confidential**." }
+        ];
+        const FALLBACK = "I can help with a variety of legal matters. Our practice areas include:\n\n• 🏢 **Business Law**\n• 👨‍👩‍👧 **Family Law**\n• 🏠 **Real Estate**\n• ⚡ **Personal Injury**\n• 💼 **Employment Law**\n• 📋 **Estate Planning**\n\nCould you describe your situation, or would you like a **free consultation**? ⚖️";
+        const msgs = document.getElementById('chatMsgs'), inp = document.getElementById('chatInput'), tog = document.getElementById('chatbotToggle'), win = document.getElementById('chatbotWindow');
+        function addMsg(t, s) { const d = document.createElement('div'); d.className = `msg ${s}`; d.innerHTML = `<div class="msg-av">${s === 'bot' ? '⚖️' : '👤'}</div><div class="msg-bubble">${t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n\n/g, '</p><p>').replace(/\n• /g, '<br>• ').replace(/\n/g, '<br>').replace(/^/, '<p>').replace(/$/, '</p>')}</div>`; msgs.appendChild(d); msgs.scrollTop = 9999 }
+        function getResp(m) { const l = m.toLowerCase(); for (const e of KB) { for (const p of e.p) if (l.includes(p)) return e.r } return FALLBACK }
+        addMsg("Welcome to **JusticeAI Legal**. ⚖️ I'm your confidential AI assistant. I can help you explore our practice areas, schedule a free consultation, or answer questions about your legal situation.\n\nHow can I help you today?", 'bot');
+        let open = false;
+        tog.onclick = () => { open = true; win.classList.add('open'); tog.style.display = 'none'; inp.focus() };
+        document.getElementById('chatClose').onclick = () => { open = false; win.classList.remove('open'); tog.style.display = 'flex' };
+        function send() { const t = inp.value.trim(); if (!t) return; addMsg(t, 'user'); inp.value = ''; document.getElementById('chatSuggestions').style.display = 'none'; const ty = document.createElement('div'); ty.className = 'msg bot'; ty.id = 'typ'; ty.innerHTML = '<div class="msg-av">⚖️</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>'; msgs.appendChild(ty); msgs.scrollTop = 9999; setTimeout(() => { document.getElementById('typ')?.remove(); addMsg(getResp(t), 'bot') }, 400 + Math.random() * 600) }
+        document.getElementById('chatSend').onclick = send;
+        inp.onkeypress = e => { if (e.key === 'Enter') send() };
+        document.querySelectorAll('.chip').forEach(c => c.onclick = () => { inp.value = c.dataset.msg; send() });
+    </script>
+</body>
+
+</html>
