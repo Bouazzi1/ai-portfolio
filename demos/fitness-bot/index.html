@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitCore Studio — AI Fitness Assistant Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #EF4444;
+            --primary-light: #F87171;
+            --primary-dark: #DC2626;
+            --accent: #F59E0B;
+            --bg: #0A0708;
+            --bg2: #110D0B;
+            --card: #1C1412;
+            --text: #FEF2F2;
+            --text2: #FCA5A5;
+            --text3: #7A6B6B;
+            --border: rgba(239, 68, 68, 0.12);
+            --font: 'Inter', sans-serif
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(10, 7, 8, .85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border)
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 1.15rem
+        }
+
+        .nav-brand .icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 28px;
+            align-items: center
+        }
+
+        .nav-links a {
+            font-size: .85rem;
+            color: var(--text3);
+            font-weight: 500;
+            transition: .2s
+        }
+
+        .nav-links a:hover {
+            color: var(--text)
+        }
+
+        .nav-cta {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 100px;
+            color: white !important;
+            font-weight: 600;
+            font-size: .82rem !important
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 24px 80px;
+            position: relative
+        }
+
+        .hero-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(239, 68, 68, .08), transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%)
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            background: rgba(239, 68, 68, .08);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: .75rem;
+            font-weight: 600;
+            color: var(--primary-light);
+            margin-bottom: 24px
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5.5vw, 4.2rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff, var(--text2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text3);
+            max-width: 520px;
+            margin: 0 auto 32px
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            flex-wrap: wrap
+        }
+
+        .hero-stat h3 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-light)
+        }
+
+        .hero-stat p {
+            font-size: .78rem;
+            color: var(--text3);
+            margin: 0
+        }
+
+        .section-head {
+            text-align: center;
+            margin-bottom: 48px
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 4px 14px;
+            background: rgba(239, 68, 68, .08);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: .7rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px
+        }
+
+        .section-head h2 {
+            font-size: 2.2rem;
+            font-weight: 800
+        }
+
+        .classes {
+            padding: 80px 24px;
+            background: var(--bg2)
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px
+        }
+
+        .class-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            transition: .3s
+        }
+
+        .class-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(239, 68, 68, .3);
+            box-shadow: 0 12px 40px rgba(239, 68, 68, .08)
+        }
+
+        .class-icon {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, rgba(239, 68, 68, .12), rgba(245, 158, 11, .08));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 16px
+        }
+
+        .class-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px
+        }
+
+        .class-card p {
+            font-size: .85rem;
+            color: var(--text3);
+            line-height: 1.6
+        }
+
+        .class-meta {
+            display: flex;
+            gap: 16px;
+            margin-top: 14px;
+            font-size: .75rem;
+            color: var(--text2)
+        }
+
+        .trainers {
+            padding: 80px 24px
+        }
+
+        .trainer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px
+        }
+
+        .trainer {
+            text-align: center;
+            padding: 28px;
+            background: var(--card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: .3s
+        }
+
+        .trainer:hover {
+            transform: translateY(-4px);
+            border-color: rgba(239, 68, 68, .25)
+        }
+
+        .trainer-avatar {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 14px
+        }
+
+        .trainer h4 {
+            font-weight: 700;
+            margin-bottom: 4px
+        }
+
+        .trainer p {
+            font-size: .82rem;
+            color: var(--text3)
+        }
+
+        .footer {
+            text-align: center;
+            padding: 32px;
+            font-size: .78rem;
+            color: var(--text3);
+            border-top: 1px solid var(--border)
+        }
+
+        .footer a {
+            color: var(--primary-light)
+        }
+
+        /* Chatbot */
+        #chatbotToggle {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px rgba(239, 68, 68, .3);
+            z-index: 9999;
+            color: white;
+            animation: bounce 2s ease infinite
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) }
+            50% { transform: translateY(-6px) }
+        }
+
+        #chatbotWindow {
+            position: fixed;
+            bottom: 96px;
+            right: 24px;
+            width: 380px;
+            height: 520px;
+            background: var(--bg);
+            border-radius: 20px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, .6);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 9999;
+            border: 1px solid var(--border)
+        }
+
+        #chatbotWindow.open {
+            display: flex;
+            animation: slideUp .3s ease
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(16px) }
+            to { opacity: 1; transform: translateY(0) }
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative
+        }
+
+        .chat-header-av {
+            width: 38px;
+            height: 38px;
+            background: rgba(255, 255, 255, .2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem
+        }
+
+        .chat-header h4 {
+            color: white;
+            font-size: .92rem;
+            font-weight: 700
+        }
+
+        .chat-header span {
+            color: rgba(255, 255, 255, .8);
+            font-size: .72rem
+        }
+
+        .chat-close {
+            position: absolute;
+            right: 14px;
+            top: 12px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, .7);
+            font-size: 1.4rem;
+            cursor: pointer
+        }
+
+        .chat-msgs {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .msg {
+            display: flex;
+            gap: 8px;
+            max-width: 88%;
+            animation: fadeIn .3s ease
+        }
+
+        .msg.bot { align-self: flex-start }
+        .msg.user { align-self: flex-end; flex-direction: row-reverse }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px) }
+            to { opacity: 1; transform: translateY(0) }
+        }
+
+        .msg-av {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .8rem;
+            flex-shrink: 0
+        }
+
+        .msg.bot .msg-av { background: rgba(239, 68, 68, .15) }
+        .msg.user .msg-av { background: rgba(245, 158, 11, .15) }
+
+        .msg-bubble {
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-size: .82rem;
+            line-height: 1.6;
+            color: var(--text)
+        }
+
+        .msg.bot .msg-bubble {
+            background: var(--card);
+            border-bottom-left-radius: 4px
+        }
+
+        .msg.user .msg-bubble {
+            background: var(--primary);
+            border-bottom-right-radius: 4px
+        }
+
+        .typing {
+            display: flex;
+            gap: 4px;
+            padding: 4px 0
+        }
+
+        .typing span {
+            width: 5px;
+            height: 5px;
+            background: var(--text3);
+            border-radius: 50%;
+            animation: dot 1.4s ease infinite;
+            display: inline-block
+        }
+
+        .typing span:nth-child(2) { animation-delay: .2s }
+        .typing span:nth-child(3) { animation-delay: .4s }
+
+        @keyframes dot {
+            0%, 80%, 100% { transform: scale(.6); opacity: .4 }
+            40% { transform: scale(1); opacity: 1 }
+        }
+
+        .suggestions {
+            padding: 8px 14px;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap
+        }
+
+        .chip {
+            padding: 6px 12px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: rgba(239, 68, 68, .06);
+            color: var(--primary-light);
+            font-size: .72rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: .2s
+        }
+
+        .chip:hover { background: rgba(239, 68, 68, .15) }
+
+        .chat-input {
+            padding: 10px 14px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 8px
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            font-size: .82rem;
+            font-family: inherit;
+            outline: none
+        }
+
+        .chat-input input:focus { border-color: var(--primary) }
+
+        .chat-input button {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: .9rem
+        }
+
+        @media(max-width:768px) {
+            .nav-links { display: none }
+            .hero h1 { font-size: 2rem }
+            #chatbotWindow { width: calc(100% - 16px); right: 8px; bottom: 80px; height: 480px }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav">
+        <a href="#" class="nav-brand">
+            <div class="icon">🏋️</div><span>FitCore Studio</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#classes">Classes</a></li>
+            <li><a href="#trainers">Trainers</a></li>
+            <li><a href="#" class="nav-cta">Join Now</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-glow"></div>
+        <div style="position:relative;z-index:2;max-width:700px">
+            <div class="hero-badge">🔥 #1 AI-Powered Gym in the City</div>
+            <h1>Your Fitness Journey Starts Here</h1>
+            <p>Personalized training, group classes, and nutrition coaching — all powered by AI to help you crush your goals.</p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <h3>2,500+</h3>
+                    <p>Active Members</p>
+                </div>
+                <div class="hero-stat">
+                    <h3>45+</h3>
+                    <p>Weekly Classes</p>
+                </div>
+                <div class="hero-stat">
+                    <h3>12</h3>
+                    <p>Expert Trainers</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="classes" id="classes">
+        <div class="container">
+            <div class="section-head">
+                <span class="section-tag">Classes</span>
+                <h2>Group Fitness Programs</h2>
+            </div>
+            <div class="grid">
+                <div class="class-card">
+                    <div class="class-icon">💪</div>
+                    <h3>HIIT Burn</h3>
+                    <p>High-intensity interval training that torches calories and builds endurance in 45 minutes.</p>
+                    <div class="class-meta">
+                        <span>⏱️ 45 min</span>
+                        <span>🔥 500-700 cal</span>
+                        <span>⚡ Advanced</span>
+                    </div>
+                </div>
+                <div class="class-card">
+                    <div class="class-icon">🧘</div>
+                    <h3>Power Yoga</h3>
+                    <p>Dynamic flow combining strength, flexibility, and mindfulness for total body wellness.</p>
+                    <div class="class-meta">
+                        <span>⏱️ 60 min</span>
+                        <span>🔥 300-400 cal</span>
+                        <span>⚡ All Levels</span>
+                    </div>
+                </div>
+                <div class="class-card">
+                    <div class="class-icon">🥊</div>
+                    <h3>Boxing Fit</h3>
+                    <p>Learn real boxing techniques while getting an incredible full-body cardio workout.</p>
+                    <div class="class-meta">
+                        <span>⏱️ 50 min</span>
+                        <span>🔥 600-800 cal</span>
+                        <span>⚡ Intermediate</span>
+                    </div>
+                </div>
+                <div class="class-card">
+                    <div class="class-icon">🚴</div>
+                    <h3>Spin Revolution</h3>
+                    <p>Indoor cycling with immersive music and lighting — ride through virtual landscapes.</p>
+                    <div class="class-meta">
+                        <span>⏱️ 40 min</span>
+                        <span>🔥 450-600 cal</span>
+                        <span>⚡ All Levels</span>
+                    </div>
+                </div>
+                <div class="class-card">
+                    <div class="class-icon">🏃</div>
+                    <h3>Functional Strength</h3>
+                    <p>Build real-world strength with compound movements, kettlebells, and bodyweight exercises.</p>
+                    <div class="class-meta">
+                        <span>⏱️ 55 min</span>
+                        <span>🔥 400-550 cal</span>
+                        <span>⚡ Intermediate</span>
+                    </div>
+                </div>
+                <div class="class-card">
+                    <div class="class-icon">💃</div>
+                    <h3>Dance Cardio</h3>
+                    <p>Fun, high-energy dance routines that make cardio feel like a party, not a workout.</p>
+                    <div class="class-meta">
+                        <span>⏱️ 50 min</span>
+                        <span>🔥 350-500 cal</span>
+                        <span>⚡ Beginner</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="trainers" id="trainers">
+        <div class="container">
+            <div class="section-head">
+                <span class="section-tag">Team</span>
+                <h2>Our Expert Trainers</h2>
+            </div>
+            <div class="trainer-grid">
+                <div class="trainer">
+                    <div class="trainer-avatar">🧑‍🦱</div>
+                    <h4>Alex Rivera</h4>
+                    <p>Head Coach — HIIT & Strength</p>
+                </div>
+                <div class="trainer">
+                    <div class="trainer-avatar">👩</div>
+                    <h4>Maya Chen</h4>
+                    <p>Yoga & Flexibility</p>
+                </div>
+                <div class="trainer">
+                    <div class="trainer-avatar">🧔</div>
+                    <h4>Marcus Thompson</h4>
+                    <p>Boxing & Combat Training</p>
+                </div>
+                <div class="trainer">
+                    <div class="trainer-avatar">👩‍🦰</div>
+                    <h4>Sofia Morales</h4>
+                    <p>Spin & Cardio</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>AI Chatbot Demo — Built by <a href="https://bouazzi1.github.io/ai-portfolio/">AI Automation Studio</a></p>
+    </footer>
+
+    <button id="chatbotToggle">💬</button>
+    <div id="chatbotWindow">
+        <div class="chat-header">
+            <div class="chat-header-av">🏋️</div>
+            <div>
+                <h4>FitCore AI Assistant</h4><span>● Online — Ready to train</span>
+            </div>
+            <button class="chat-close" id="chatClose">×</button>
+        </div>
+        <div class="chat-msgs" id="chatMsgs"></div>
+        <div class="suggestions" id="chatSuggestions">
+            <button class="chip" data-msg="What classes do you offer?">🏋️ Classes</button>
+            <button class="chip" data-msg="Tell me about membership plans">💳 Membership</button>
+            <button class="chip" data-msg="I want personal training">🎯 Personal Training</button>
+            <button class="chip" data-msg="What are your hours?">🕐 Hours</button>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Ask about classes, membership, training...">
+            <button id="chatSend">➤</button>
+        </div>
+    </div>
+
+    <script>
+        const KB = [
+            { p: ["hello", "hi", "hey", "sup"], r: "Hey there! 💪 Welcome to **FitCore Studio**. I'm your AI fitness assistant. I can help you with:\n\n• 🏋️ Class schedules & booking\n• 💳 Membership plans\n• 🎯 Personal training\n• 🥗 Nutrition coaching\n• 🕐 Hours & location\n\nWhat can I help you with today?" },
+            { p: ["class", "schedule", "group", "session", "program"], r: "🏋️ **Our Group Classes:**\n\n• 💪 **HIIT Burn** — Mon/Wed/Fri 6AM, 12PM, 6PM (45 min)\n• 🧘 **Power Yoga** — Tue/Thu/Sat 7AM, 5PM (60 min)\n• 🥊 **Boxing Fit** — Mon/Wed/Fri 7AM, 7PM (50 min)\n• 🚴 **Spin Revolution** — Tue/Thu 6AM, 12PM, 6PM (40 min)\n• 🏃 **Functional Strength** — Mon/Wed/Sat 8AM, 5PM (55 min)\n• 💃 **Dance Cardio** — Tue/Thu/Sat 9AM, 6PM (50 min)\n\n📱 Book online or through our app. Drop-ins welcome!\n\nWant me to recommend a class for your goals?" },
+            { p: ["membership", "plan", "price", "cost", "join", "sign up", "register"], r: "💳 **Membership Plans:**\n\n🥉 **Basic — $29/month**\n• Gym access (Mon-Fri 9AM-5PM)\n• 4 group classes/month\n• Locker access\n\n🥈 **Pro — $59/month** ⭐ Most Popular\n• Unlimited 24/7 gym access\n• Unlimited group classes\n• Sauna & recovery zone\n• 1 PT session/month\n\n🥇 **Elite — $99/month**\n• Everything in Pro\n• 4 PT sessions/month\n• Nutrition coaching\n• Guest passes (2/month)\n• Priority class booking\n\n🎁 **First week FREE** for all plans!\n\nWant to start your free trial?" },
+            { p: ["personal train", "pt", "one on one", "1 on 1", "private", "trainer"], r: "🎯 **Personal Training:**\n\n**Single Session:** $65/session\n**4-Pack:** $220 ($55/session — Save 15%)\n**8-Pack:** $400 ($50/session — Save 23%)\n**12-Pack:** $540 ($45/session — Save 31%)\n\n**Our Top Trainers:**\n• 🧑‍🦱 **Alex Rivera** — HIIT, Strength, Body Transformation\n• 👩 **Maya Chen** — Yoga, Mobility, Injury Recovery\n• 🧔 **Marcus Thompson** — Boxing, Combat, Athletic Performance\n• 👩‍🦰 **Sofia Morales** — Spin, Cardio, Weight Loss\n\nAll sessions include a personalized workout plan + progress tracking.\n\nWant to book a free consultation?" },
+            { p: ["nutrition", "diet", "meal", "eat", "food", "macro"], r: "🥗 **Nutrition Coaching:**\n\nAvailable with our **Elite membership** or as an add-on ($40/month):\n\n• 📋 Custom meal plan based on your goals\n• 📊 Macro tracking & weekly check-ins\n• 🛒 Grocery lists & meal prep guides\n• 📱 MyFitnessPal integration\n• 🔄 Plans adjusted monthly\n\n**Goal-Specific Plans:**\n• 🔥 Fat Loss — Calorie deficit + high protein\n• 💪 Muscle Gain — Surplus + progressive overload\n• ⚡ Performance — Sport-specific fueling\n• 🌱 Plant-Based — Vegan/vegetarian optimized\n\nReady to transform your nutrition?" },
+            { p: ["hour", "open", "close", "time", "when", "location", "where", "address"], r: "🕐 **Hours & Location:**\n\n• **Mon–Fri:** 5:00 AM – 11:00 PM\n• **Saturday:** 6:00 AM – 10:00 PM\n• **Sunday:** 7:00 AM – 8:00 PM\n• **Holidays:** 8:00 AM – 4:00 PM\n\n📍 **Location:** 789 Fitness Blvd, Downtown\n📞 **Phone:** (555) 789-1234\n📧 **Email:** hello@fitcorestudio.com\n🅿️ **Free parking** available\n\n💡 Pro & Elite members have **24/7 access**!" },
+            { p: ["cancel", "freeze", "pause", "stop", "quit"], r: "📝 **Membership Changes:**\n\n• **Freeze:** Pause for up to 3 months ($10/month hold fee)\n• **Downgrade:** Switch plans anytime, effective next billing\n• **Cancel:** 30-day notice required, no cancellation fees\n\n📱 Manage everything through the FitCore app or visit the front desk.\n\nNeed help with a specific change?" },
+            { p: ["trial", "free", "try", "test", "visit"], r: "🎁 **Free Trial Offer:**\n\n• **7-day full access** — no credit card required\n• Try all classes, equipment, and facilities\n• Includes 1 free PT consultation\n• Tour of the gym with a trainer\n\n📋 Just bring a valid ID and wear comfortable workout clothes!\n\nReady to start your free week?" },
+            { p: ["equip", "facility", "amenity", "pool", "sauna", "shower"], r: "🏢 **Our Facilities:**\n\n• 🏋️ **Strength Zone** — Free weights, squat racks, cables\n• 🏃 **Cardio Floor** — Treadmills, bikes, rowers, stairclimbers\n• 🥊 **Boxing Ring** — Heavy bags, speed bags, ring\n• 🧘 **Mind-Body Studio** — Yoga, Pilates, meditation\n• 🚴 **Spin Studio** — 30 bikes with performance tracking\n• 🧖 **Recovery Zone** — Sauna, cold plunge, foam rolling\n• 🚿 **Locker Rooms** — Showers, towels, grooming stations\n• ☕ **Juice Bar** — Smoothies, protein shakes, snacks\n\nWant to schedule a tour?" },
+            { p: ["beginner", "start", "new", "first time", "never", "intimidat"], r: "🌟 **Welcome, Future Athlete!**\n\nWe love beginners! Here's how we make it easy:\n\n1️⃣ **Free Intro Session** — A trainer shows you around\n2️⃣ **Beginner Classes** — Dance Cardio, Power Yoga, Spin\n3️⃣ **FitStart Program** — 4-week guided intro plan\n4️⃣ **No judgment zone** — Everyone starts somewhere!\n\n📊 Our trainers will assess your fitness level and create a custom starting plan.\n\nReady to take the first step? 💪" },
+            { p: ["result", "transform", "before", "after", "success", "lose", "gain"], r: "🏆 **Member Success Stories:**\n\n• 💪 **Jake, 32** — Lost 45 lbs in 6 months with HIIT + nutrition coaching\n• 🧘 **Lisa, 28** — Recovered from back injury with yoga & PT\n• 🥊 **David, 40** — Completed first amateur boxing match after 8 months\n• 🏃 **Maria, 35** — Ran her first marathon with our running club\n\n📊 **Average results in 3 months:**\n• 15-25 lbs fat loss\n• 20% strength increase\n• 85% report better energy & mood\n\nYour transformation is next! 🔥" },
+            { p: ["thank", "thanks", "great", "perfect", "awesome"], r: "You're welcome! 🔥 Remember: every rep counts. We're here for you!\n\n💪 See you at the gym!\n📞 Phone: (555) 789-1234\n📧 Email: hello@fitcorestudio.com" }
+        ];
+        const FALLBACK = "I'd love to help! You can ask me about:\n\n• 🏋️ **Classes** & schedules\n• 💳 **Membership** plans & pricing\n• 🎯 **Personal training**\n• 🥗 **Nutrition** coaching\n• 🕐 **Hours** & location\n• 🎁 **Free trial**\n\nWhat sounds good? 💪";
+        const msgs = document.getElementById('chatMsgs'), inp = document.getElementById('chatInput'), tog = document.getElementById('chatbotToggle'), win = document.getElementById('chatbotWindow');
+        function addMsg(t, s) { const d = document.createElement('div'); d.className = `msg ${s}`; d.innerHTML = `<div class="msg-av">${s === 'bot' ? '🏋️' : '👤'}</div><div class="msg-bubble">${t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n\n/g, '</p><p>').replace(/\n• /g, '<br>• ').replace(/\n/g, '<br>').replace(/^/, '<p>').replace(/$/, '</p>')}</div>`; msgs.appendChild(d); msgs.scrollTop = 9999 }
+        function getResp(m) { const l = m.toLowerCase(); for (const e of KB) { for (const p of e.p) if (l.includes(p)) return e.r } return FALLBACK }
+        addMsg("Hey! 💪 I'm the FitCore AI Assistant. I can help you find classes, explore membership plans, book personal training, and more.\n\nWhat are you looking for today?", 'bot');
+        let open = false;
+        tog.onclick = () => { open = true; win.classList.add('open'); tog.style.display = 'none'; inp.focus() };
+        document.getElementById('chatClose').onclick = () => { open = false; win.classList.remove('open'); tog.style.display = 'flex' };
+        function send() { const t = inp.value.trim(); if (!t) return; addMsg(t, 'user'); inp.value = ''; document.getElementById('chatSuggestions').style.display = 'none'; const ty = document.createElement('div'); ty.className = 'msg bot'; ty.id = 'typ'; ty.innerHTML = '<div class="msg-av">🏋️</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>'; msgs.appendChild(ty); msgs.scrollTop = 9999; setTimeout(() => { document.getElementById('typ')?.remove(); addMsg(getResp(t), 'bot') }, 400 + Math.random() * 600) }
+        document.getElementById('chatSend').onclick = send;
+        inp.onkeypress = e => { if (e.key === 'Enter') send() };
+        document.querySelectorAll('.chip').forEach(c => c.onclick = () => { inp.value = c.dataset.msg; send() });
+    </script>
+</body>
+
+</html>
